@@ -1,0 +1,29 @@
+.mode-toggle input {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+
+  clip: rect(0 0 0 0);
+}
+
+.mode-toggle input:checked ~ span {
+  color: #fff;
+  background-color: var(--color-blue);
+}
+
+.mode-toggle-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+}
+
+.office-travel-modes {
+    margin: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+}

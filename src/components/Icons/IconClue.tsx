@@ -1,0 +1,35 @@
+import React from 'react';
+
+const IconClue = () => {
+  return (
+    <svg
+      width='29'
+      height='24'
+      viewBox='0 0 29 24'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <path
+        d='M22.4769 8C24.1128 8 25.439 6.8807 25.439 5.5C25.439 4.11929 24.1128 3 22.4769 3C20.8411 3 19.5149 4.11929 19.5149 5.5C19.5149 6.8807 20.8411 8 22.4769 8Z'
+        stroke='currentColor'
+        stroke-width='2'
+        stroke-linejoin='round'
+      />
+      <path
+        d='M7.07423 21C8.71011 21 10.0363 19.8807 10.0363 18.5C10.0363 17.1193 8.71011 16 7.07423 16C5.43834 16 4.11218 17.1193 4.11218 18.5C4.11218 19.8807 5.43834 21 7.07423 21Z'
+        stroke='currentColor'
+        stroke-width='2'
+        stroke-linejoin='round'
+      />
+      <path
+        d='M22.4769 8V17.7521C22.4769 19.5459 20.754 21 18.6287 21C16.5034 21 14.7805 19.5459 14.7805 17.7521V6.2521C14.7805 4.456 13.0554 3 10.9274 3C8.79931 3 7.07422 4.456 7.07422 6.2521V16'
+        stroke='currentColor'
+        stroke-width='2'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+      />
+    </svg>
+  );
+};
+
+export default IconClue;
