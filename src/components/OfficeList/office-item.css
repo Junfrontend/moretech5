@@ -5,3 +5,24 @@
 .office-item-name {
     font-size: 0.7rem;
 }
+
+.office-item-busy {
+    font-size: 0.7rem;
+    margin-right: 10px;
+}
+
+.branch-busy-info .busy-level-red {
+    background-color: #811111;
+    color: #FFFFFF;
+}
+
+.branch-busy-info .busy-level-semi-red {
+    background-color: #f09796;
+    color: #000000;
+}
+
+
+.branch-busy-info .busy-level-light {
+    background-color: #fadede;
+    color: #000000;
+}

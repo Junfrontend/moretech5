@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, Chip } from '@mui/material';
 import LocationMark from '../LocationMark/LocationMark';
 import './office-item.css';
 import {getRandomInt} from '../../utils';
@@ -64,16 +64,9 @@ const OfficeItem = (props: any) => {
         {/* Загрузка */}
       </Stack>
       <Stack direction={"row"} py={"10px"} alignItems={'center'} className={'branch-busy-info'}>
-        <Typography
-          sx={{
-            fontSize: "14px",
-            fontWeight: "700px",
-            ml: "12px",
-            mr: "12px",
-          }}
-        >
+        <p className='office-item-busy'>
          Загруженность:
-        </Typography>
+        </p>
         <Chip label={busyBranchInfo.label} className={`busy-level-${busyBranchInfo.className}`} />
       </Stack>
     </Stack>
