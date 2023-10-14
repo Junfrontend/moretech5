@@ -195,7 +195,9 @@ const UserLocationSlice = createSlice({
     },
 
     setDataDisplayType: (state, action) => {
-      state.dataDisplayType = action.payload;
+      if (action.payload) {
+        state.dataDisplayType = action.payload;
+      }
     },
 
     setCurrentOffice: (state, action) => {
