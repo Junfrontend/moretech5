@@ -3,7 +3,7 @@ export const useMap = (currentLoc: any) => {
   //@ts-ignore
   const getMap = () => new window.ymaps.Map('map', {
     center: currentLoc,
-    zoom: 10,
+    zoom: 7,
     controls: ['geolocationControl', ], // отключение элементов управления geolocationControl - тек локация
     //@ts-ignore
     type: DARK_MAP,
