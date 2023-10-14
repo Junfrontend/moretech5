@@ -6,19 +6,20 @@
   height: 250px;
   flex: 1;
   background-color: var(--vt-c-white-mute);
-  margin-right: 0.5rem;
+  margin-right: 1rem;
 }
 
 .char,
 .char-cont {
-  border-radius: 12px;
+  max-width: 3.5rem;
+  border-radius: 12px 12px 0 0;
 }
 
 .char-count {
   font-size: 0.7rem;
   text-align: center;
   font-weight: 300;
-  padding-bottom: 0.4rem;
+  padding: 0.4rem 0;
 }
 
 .char-note {
@@ -33,4 +34,5 @@
 
 .office-chars {
   display: flex;
+  justify-content: space-between;
 }
