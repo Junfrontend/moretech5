@@ -1,0 +1,28 @@
+.char {
+  position: relative;
+  min-width: 1rem;
+  height: 250px;
+  flex: 1;
+  background-color: var(--vt-c-white-mute);
+  margin-right: 0.5rem;
+}
+
+.char,
+.char-cont {
+  border-radius: 12px;
+}
+
+.char-cont {
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.char:last-child {
+  margin-right: 0;
+}
+
+.office-chars {
+  display: flex;
+}

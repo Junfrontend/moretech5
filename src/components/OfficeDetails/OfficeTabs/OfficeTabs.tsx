@@ -3,12 +3,43 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-
+import { OfficeChars } from '../OfficeChars/OfficeChars';
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
+
+const chars = [
+  {
+    day: 0,
+    count: 21,
+  },
+  {
+    day: 1,
+    count: 16,
+  },
+  {
+    day: 2,
+    count: 16,
+  },
+  {
+    day: 3,
+    count: 17,
+  },
+  {
+    day: 4,
+    count: 15,
+  },
+  {
+    day: 5,
+    count: 22,
+  },
+  {
+    day: 6,
+    count: 17,
+  },
+];
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -58,6 +89,7 @@ export default function OfficeTabs() {
       </Box>
       <CustomTabPanel value={value} index={0}>
         Физ лицам
+        <OfficeChars chars={chars}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         Юр лицам
