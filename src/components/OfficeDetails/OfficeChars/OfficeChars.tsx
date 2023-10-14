@@ -39,7 +39,7 @@ export const OfficeChars = ({ chars }: { chars: CharsType[] }) => {
   return (
     <div className='office-chars'>
       {chars.map((el) => (
-        <Char char={el} />
+        <Char char={el} key={el.day}/>
       ))}
     </div>
   );

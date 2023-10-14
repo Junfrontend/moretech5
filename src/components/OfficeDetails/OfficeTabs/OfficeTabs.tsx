@@ -5,6 +5,8 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { OfficeChars } from '../OfficeChars/OfficeChars';
 import OfficeTags from '../OfficeTags/OfficeTags';
+import SimpleListMenu from '../SimpleListMenu/SimpleListMenu';
+import './office-tabs.css';
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -41,6 +43,8 @@ const chars = [
     count: 17,
   },
 ];
+
+const options = ['По дням', 'По часам'];
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -89,10 +93,18 @@ export default function OfficeTabs() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <OfficeTags />
+        <OfficeTags handleClick={() => console.log('1')}/>
+        <div className='office-menu-list'>
+          Загруженность:
+          <SimpleListMenu options={options} />
+        </div>
         <OfficeChars chars={chars} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
+        <div className='office-menu-list'>
+          Загруженность:
+          <SimpleListMenu options={options} />
+        </div>
         <OfficeChars chars={chars} />
       </CustomTabPanel>
     </Box>
