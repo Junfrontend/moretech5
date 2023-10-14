@@ -10,7 +10,7 @@ import { IconLocation } from '../Icons/IconLocation';
 import IconAlarm from '../Icons/IconAlarm';
 import { OfficeOpenHours } from './OfficeOpenHours/OfficeOpenHours';
 import IconClue from '../Icons/IconClue';
-
+import { OfficeTravelModes } from './OfficeOpenHours/OfficeTravelModes/OfficeTravelModes';
 export const OfficeDetails = () => {
   const { salePointName, address, openHours } = officesData[0];
 
@@ -60,6 +60,8 @@ export const OfficeDetails = () => {
         Режим работы:
         {openHours.length && <OfficeOpenHours openHours={openHours} />}
       </div>
+
+      <OfficeTravelModes />
 
       <button type='button' className='office-details-btn'><IconClue />сюда</button>
     </div>
