@@ -1,0 +1,35 @@
+.map {
+  height: 500px;
+}
+
+.wrapper-icon-outer {
+  position: relative;
+  z-index: -1;
+  top: -5px;
+  left: -5px;
+
+  padding: 20px;
+  background-color: rgb(26, 30, 35);
+  border-radius: 50%;
+}
+
+.cluster-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 20px;
+  padding: 5px;
+
+  background-color: rgb(26, 30, 35);
+
+  border: 2px solid rgb(71, 137, 235);
+  border-radius: 50%;
+}
+
+
+.cluster-text {
+  font-family: sans-serif;
+  font-size: 16px;
+  color: #ffffff;
+}

@@ -1,33 +1,76 @@
-import { YMaps, useYMaps } from "@pbe/react-yandex-maps";
+import { useEffect } from "react";
 import { useAppSelector } from "../../redux/hooks";
 import { getCurrentUserLocation } from "../../redux/UserLocationSlice/selectors";
-import { Placemark, Map } from "@pbe/react-yandex-maps";
-import { useEffect, useRef } from "react";
+
+
+import {useMap} from '../../hooks/useMap';
+import {getJSONFromOfficies} from '../../utils';
+import {officesData} from '../../mocks/offices';
+
+import './MainMap.css';
 
 const MainMap = () => {
+  let isFirstMount = true;
+
   const { lat, lng } = useAppSelector(getCurrentUserLocation);
+  const {
+    getMap,
+    getManager,
+    setPins,
+  } = useMap([lat, lng]);
 
-  const mapRef = useRef(null);
-  const ymaps = useYMaps(["Map", "Placemark"]);
-
-  useEffect(() => {
-    if (!ymaps || !mapRef.current) {
-      return;
-    }
-
-    new ymaps.Map(mapRef.current, {
-      center: [lat || 55.76, lng || 37.64],
-      zoom: 14,
+  function init () {
+    const DARK_MAP = 'custom#dark';
+    //@ts-ignore
+    const ymaps = window.ymaps;
+    //@ts-ignore
+    ymaps.layer.storage.add(DARK_MAP, function DarkLayer() {
+      //@ts-ignore
+      return new window.ymaps.Layer(
+        'https://core-renderer-tiles.maps.yandex.net/tiles?l=map&theme=dark&%c&%l&scale={{ scale }}',
+      );
     });
-  }, [ymaps]);
+    //@ts-ignore
+    ymaps.mapType.storage.add(DARK_MAP, new ymaps.MapType('Dark Map', [DARK_MAP]));
+
+    const myMap = getMap();
+    const objectManager = getManager();
+
+    setPins(objectManager, getJSONFromOfficies(officesData));
+
+    // objectManager.clusters.events.add(['mouseenter', 'mouseleave'], (e) => onClusterEvent(e, objectManager));
+
+    // локация юсера
+    let geolocation = ymaps.geolocation
+    geolocation.get({
+      provider: 'browser',
+      mapStateAutoApply: true
+    }).then(function (result) {
+      //@ts-ignore
+      result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+      myMap.geoObjects.add(result.geoObjects);
+    });
+
+    myMap.geoObjects.add(objectManager);
+  }
+
 
   useEffect(() => {
-    if (!ymaps || !mapRef.current) {
+    if (isFirstMount) {
+      isFirstMount = false;
       return;
     }
-  }, [lat, lng, ymaps]);
+    //@ts-ignore
+    if (window.ymaps) {
+      //@ts-ignore
+      window.ymaps.ready(init);
+    }
+  }, []);
 
-  return <div ref={mapRef} style={{ width: "320px", height: "240px" }} />;
+
+  return (
+    <div id='map' className='map'></div>
+  );
 };
 
 export default MainMap;
