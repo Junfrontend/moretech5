@@ -1,9 +1,34 @@
 .map {
-  height: calc(100dvh - 154px);
+  min-height: 500px;
+  height: 100vh!important;
+  min-width: 50vw!important;
+
+  & + div {
+    height: 100%;
+  }
 }
 
 body {
   margin: 0;
+}
+
+.app-desktop {
+  max-height: calc(100vh - 170px);
+  & > .MuiStack-root {
+    overflow: auto;
+    padding: 2rem;
+  }
+}
+
+.wrapper-icon-outer {
+  position: relative;
+  z-index: -1;
+  top: -5px;
+  left: -5px;
+
+  padding: 20px;
+  background-color: rgb(26, 30, 35);
+  border-radius: 50%;
 }
 
 .cluster-icon {
