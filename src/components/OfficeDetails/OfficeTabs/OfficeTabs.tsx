@@ -88,11 +88,10 @@ export default function OfficeTabs() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        Физ лицам
-        <OfficeChars chars={chars}/>
+        <OfficeChars chars={chars} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        Юр лицам
+        <OfficeChars chars={chars} />
       </CustomTabPanel>
     </Box>
   );

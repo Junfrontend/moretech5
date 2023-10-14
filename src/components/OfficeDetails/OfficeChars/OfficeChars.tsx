@@ -10,14 +10,13 @@ const getUniqueFromRange = (min: number, max: number) => {
   return Math.floor(min + Math.random() * (max - min + 1));
 };
 
-const colors = ["#7B8584", "#1350AE", "#B5FC59", "#D9D9D9"];
+const colors = ['#7B8584', '#1350AE', '#B5FC59', '#D9D9D9'];
 
 const getRandomItem = (items: string[]) => {
   return items[getUniqueFromRange(0, items.length)];
 };
 
 const Char = ({ char }: { char: CharsType }) => {
-  const { day, count } = char;
 
   return (
     <>
@@ -28,7 +27,7 @@ const Char = ({ char }: { char: CharsType }) => {
             background: getRandomItem(colors),
             height: getUniqueFromRange(100, 200),
           }}
-        ></div>
+        />
       </div>
     </>
   );

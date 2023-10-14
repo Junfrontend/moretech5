@@ -12,6 +12,12 @@
   border-radius: 12px;
 }
 
+.char-note {
+    transform: translateY(100%);
+    text-align: center;
+}
+
+.char-note,
 .char-cont {
   position: absolute;
   right: 0;
