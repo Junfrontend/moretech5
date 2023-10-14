@@ -1,7 +1,8 @@
 export const useMap = (currentLoc: any) => {
   const DARK_MAP = "custom#dark";
+  let map: any = null;
   //@ts-ignore
-  const getMap = ({
+  const setMap = ({
     controls = [],
     loc = null,
   } : {
@@ -9,12 +10,9 @@ export const useMap = (currentLoc: any) => {
     loc?: number[] | null;
     //@ts-ignore
   }) => {
-    const mapCotainer = document.querySelector("#map");
-    if (mapCotainer) {
-      mapCotainer.innerHTML = "";
-    }
+    destroyMap();
 
-    return new window.ymaps.Map(
+    map = new window.ymaps.Map(
       "map",
       {
         center: loc || currentLoc,
@@ -27,7 +25,17 @@ export const useMap = (currentLoc: any) => {
         buttonMaxWidth: 300,
         searchControlProvider: 'yandex#search'
       });
+
+    return map;
   }
+
+  const destroyMap = () => {
+    //@ts-ignore
+    if (map) {
+      //@ts-ignore
+      map.destroy();
+    }
+  };
 
   //@ts-ignore
   const getManager = () => {
@@ -84,7 +92,7 @@ export const useMap = (currentLoc: any) => {
   };
 
   return {
-    getMap,
+    setMap,
     getManager,
     setPins,
   };

@@ -19,7 +19,7 @@ import {
 import { useDispatch } from "react-redux";
 import { DRAWER_TYPES } from "../../types";
 import FilterDrawer from '../FilterDrawer/FilterDrawer';
-import {OfficeDetails} from '../OfficeDetails/OfficeDetails';
+import DetailsDrawer from '../DetailsDrawer/DetailsDrawer';
 
 export default function BaseDrawer({ children }: any) {
   //   Стейт берем из глобального стора +
@@ -50,7 +50,7 @@ export default function BaseDrawer({ children }: any) {
         return <FilterDrawer />;
       case DRAWER_TYPES.OFFICE:
         // Компонент для начинки Drawer`а
-        return <OfficeDetails />;
+        return <DetailsDrawer />;
     }
   };
 

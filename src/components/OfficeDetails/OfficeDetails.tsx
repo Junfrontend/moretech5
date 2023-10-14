@@ -70,11 +70,6 @@ export const OfficeDetails = () => {
 
       <footer>
         <OfficeTravelModes />
-
-        <button type='button' className='office-details-btn'>
-          <IconClue />
-          сюда
-        </button>
       </footer>
     </div>
   );

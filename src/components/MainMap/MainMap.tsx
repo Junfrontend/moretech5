@@ -23,9 +23,36 @@ const MainMap = () => {
   const displayType = useAppSelector(getDataDisplayType);
   const { lat, lng } = useAppSelector(getCurrentUserLocation);
 
+  let map:any = null;
+
   const dispatch = useDispatch();
 
-  const { getMap, getManager, setPins } = useMap([lat, lng]);
+  const {
+    setMap,
+    getManager,
+    setPins,
+  } = useMap([lat, lng]);
+
+  const setLocation = (map: any) => {
+    //@ts-ignore
+    const ymaps = window.ymaps;
+    let geolocation = ymaps.geolocation;
+
+    geolocation.get({
+      provider: 'browser',
+      mapStateAutoApply: false,
+    }).then(function (result) {
+      //@ts-ignore
+      result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+      map.geoObjects.add(result.geoObjects);
+      //@ts-ignore
+      map.setCenter(result.geoObjects.get(0).geometry.getCoordinates(), 13, {duration: 300});
+    });
+  };
+
+  const setNewMap = () => {
+    map = setMap({});
+  };
 
   function init() {
     const DARK_MAP = "custom#dark";
@@ -44,33 +71,22 @@ const MainMap = () => {
       new ymaps.MapType("Dark Map", [DARK_MAP])
     );
 
-    const myMap = getMap({});
+    setNewMap();
     const objectManager = getManager();
-
     setPins(objectManager, getJSONFromOfficies(officesData));
 
     // локация юсера
-    let geolocation = ymaps.geolocation
-    geolocation.get({
-      provider: 'browser',
-      mapStateAutoApply: false,
-    }).then(function (result) {
-      //@ts-ignore
-      result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
-      myMap.geoObjects.add(result.geoObjects);
-      //@ts-ignore
-      myMap.setCenter(result.geoObjects.get(0).geometry.getCoordinates(), 13, {duration: 300});
-    });
-
-    myMap.geoObjects.add(objectManager);
-    myMap.geoObjects.events.add('click', function(e) {
-      let objectId = e.get('objectId');
+    setLocation(map);
+    map.geoObjects.add(objectManager);
+    map.geoObjects.events.add('click', function(e: any) {
+      let objectId: string = e.get('objectId');
 
       if (Number(objectId) <= 0) {
         return;
       }
       let currentOffice: any = null;
       // todo нужны ID!!!!
+
       for (let i = 0; i < officesData.length; i++) {
         //@ts-ignore
         if (i + 1 === Number(objectId)) {
@@ -86,17 +102,20 @@ const MainMap = () => {
     });
   }
 
+  const setMapCenter = () => {
+    const map = document.querySelector('#map');
+    if (map?.innerHTML) {
+      map.innerHTML = '';
+    }
+    init();
+  };
+
   useEffect(() => {
     //@ts-ignore
     if (window.ymaps && displayType === DATA_DISPLAY_TYPE.MAP) {
-      //@ts-ignore
-      const mapCotainer = document.querySelector("#map");
-      //@ts-ignore
-      mapCotainer.innerHTML = "";
       window.ymaps.ready(init);
     }
   }, [displayType]);
-
 
   return (
     <Stack direction={"column"}>
@@ -107,7 +126,7 @@ const MainMap = () => {
         )}
         {displayType === DATA_DISPLAY_TYPE.LIST && <OfficeList />}
       </Stack>
-      <NavBar />
+      <NavBar setMapCenter={setMapCenter} />
     </Stack>
   );
 };
