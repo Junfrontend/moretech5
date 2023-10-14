@@ -1,0 +1,39 @@
+@font-face {
+  font-family: 'VTBGroupUI';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('../fonts/VTBGroupUI-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'VTBGroupUI';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+  src: url('../fonts/VTBGroupUI-Light.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'VTBGroupUI';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('../fonts/VTBGroupUI-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'VTBGroupUI';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('../fonts/VTBGroupUI-DemiBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'VTBGroupUI';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('../fonts/VTBGroupUI-Bold.woff2') format('woff2');
+}
