@@ -1,9 +1,9 @@
-import { Box, Stack, Typography } from "@mui/material";
-import LocationMark from "../LocationMark/LocationMark";
+import { Box, Stack, Typography } from '@mui/material';
+import LocationMark from '../LocationMark/LocationMark';
+import './office-item.css';
 
 function calculateWorkloadPercentage(workload: any) {
-    console.log(workload, 'workload 222');
-    
+
   // Находим общее количество count за все дни
   const total = 30;
 
@@ -20,8 +20,7 @@ const OfficeItem = (props: any) => {
   const { salePointName, distance, address, metroStation, workload } =
     props.data;
 
-    console.log(workload, 'workload');
-    
+  console.log(workload, 'workload');
 
   for (const service of Object.values(workload)) {
     console.log(calculateWorkloadPercentage(service));
@@ -30,30 +29,22 @@ const OfficeItem = (props: any) => {
   return (
     <Stack
       sx={{
-        borderBottom: "1px solid #0D2C75",
-        mt: "10px",
+        borderBottom: '1px solid #0D2C75',
+        mt: '10px',
       }}
     >
       <Stack
-        direction={"row"}
-        justifyContent={"space-between"}
+        direction={'row'}
+        justifyContent={'space-between'}
         sx={{
-          width: "100%",
+          width: '100%',
         }}
       >
         <LocationMark distance={distance} />
-        <Typography
-          sx={{
-            fontSize: "17px",
-            fontWeight: "700px",
-            ml: "12px",
-          }}
-        >
-          {address}
-        </Typography>
+        <p className='office-item-adress'>{address}</p>
       </Stack>
-      <Typography fontSize={"12px"}>{salePointName}</Typography>
-      <Stack direction={"row"} py={"10px"}>
+      <p className='office-item-name'>{salePointName}</p>
+      <Stack direction={'row'} py={'10px'}>
         {/* Загрузка */}
       </Stack>
     </Stack>
