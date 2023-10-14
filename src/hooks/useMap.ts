@@ -1,5 +1,3 @@
-import myIcon from '/assets/myIcon.svg';
-
 export const useMap = (currentLoc: any) => {
   const DARK_MAP = 'custom#dark';
   //@ts-ignore
@@ -31,7 +29,7 @@ export const useMap = (currentLoc: any) => {
 
     objectManager.objects.options.set({
       iconLayout:  'default#imageWithContent',
-      iconImageHref: myIcon,
+      iconImageHref: '',// todo icon
       iconImageSize: [30, 30],
       iconImageOffset: [0, 0],
       iconContentLayout: iconContentLayout,
