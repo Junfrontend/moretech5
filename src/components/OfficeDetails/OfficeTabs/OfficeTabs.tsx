@@ -4,6 +4,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { OfficeChars } from '../OfficeChars/OfficeChars';
+import OfficeTags from '../OfficeTags/OfficeTags';
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -53,7 +54,7 @@ function CustomTabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -77,7 +78,7 @@ export default function OfficeTabs() {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Box mb={2}>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -88,6 +89,7 @@ export default function OfficeTabs() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
+        <OfficeTags />
         <OfficeChars chars={chars} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>

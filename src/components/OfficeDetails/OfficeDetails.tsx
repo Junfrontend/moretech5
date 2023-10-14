@@ -1,9 +1,6 @@
-import React from 'react';
-import { OfficeType } from '../../types/office';
 import './office-details.css';
 import { officesData } from '../../mocks/offices';
 import { IconBookmark } from '../Icons/IconBookmark';
-import { IconEmail } from '../Icons/IconEmail';
 import { IconPhone } from '../Icons/IconPhone';
 import { OfficeFeatures } from './OfficeFeatures/OfficeFeatures';
 import { IconLocation } from '../Icons/IconLocation';

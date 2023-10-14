@@ -17,15 +17,17 @@ const getRandomItem = (items: string[]) => {
 };
 
 const Char = ({ char }: { char: CharsType }) => {
+  const h = getUniqueFromRange(100, 200);
 
   return (
     <>
       <div className='char'>
+        <span className='char-count'>{h}</span>
         <div
           className='char-cont'
           style={{
             background: getRandomItem(colors),
-            height: getUniqueFromRange(100, 200),
+            height: h,
           }}
         />
       </div>
