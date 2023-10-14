@@ -1,14 +1,15 @@
 export const useMap = (currentLoc: any) => {
   const DARK_MAP = 'custom#dark';
   //@ts-ignore
-  const getMap = () => new window.ymaps.Map('map', {
-    center: currentLoc,
+  const getMap = (controls: any = [], loc: number[] = null) => new ymaps.Map('map', {
+    center: loc || currentLoc,
     zoom: 7,
-    controls: ['geolocationControl', ], // отключение элементов управления geolocationControl - тек локация
+    controls,
     //@ts-ignore
     type: DARK_MAP,
   }, {
     //@ts-ignore
+    buttonMaxWidth: 300,
     searchControlProvider: 'yandex#search'
   });
 

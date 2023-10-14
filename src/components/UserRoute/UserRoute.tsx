@@ -3,6 +3,7 @@ import {setDrawerClose, setUserLocation} from '../../redux/UserLocationSlice/Use
 import {FormEvent, useEffect, useState} from 'react';
 import {useAppSelector} from '../../redux/hooks';
 import {getCurrentUserLocation} from '../../redux/UserLocationSlice/selectors';
+import {useMap} from '../../hooks/useMap';
 
 const Transport = {
   Car: 'car',
@@ -16,6 +17,9 @@ export default function UserRoute({branchLocation}: any) {
   const dispatch = useDispatch();
   const currentLocation = useAppSelector(getCurrentUserLocation);
   const [transport, setTransport] = useState('');
+  const {
+    getMap
+  } = useMap(currentLocation);
 
   const handleUserGeoReceive = (position: any) => {
     dispatch(
@@ -46,16 +50,21 @@ export default function UserRoute({branchLocation}: any) {
         results: 2
       }
     }, {
-      boundsAutoApply: true
+      boundsAutoApply: true,
+      wayPointStartIconColor: "#FFFFFF",
+      wayPointStartIconFillColor: "#B3B3B3",
+      // Внешний вид линии активного маршрута.
+      routeActiveStrokeWidth: 8,
+      routeActiveStrokeStyle: 'solid',
+      routeActiveStrokeColor: "#002233",
+      // Внешний вид линий альтернативных маршрутов.
+      routeStrokeStyle: 'dot',
+      routeStrokeWidth: 3,
     });
+
 
     let trafficButton = new ymaps.control.Button({
       data: { content: "Учитывать пробки" },
-      options: { selectOnClick: true }
-    });
-
-    let viaPointButton = new ymaps.control.Button({
-      data: { content: "Добавить транзитную точку" },
       options: { selectOnClick: true }
     });
 
@@ -67,29 +76,9 @@ export default function UserRoute({branchLocation}: any) {
       multiRoute.model.setParams({ avoidTrafficJams: false }, true);
     });
 
-    viaPointButton.events.add('select', function () {
-      let referencePoints = multiRoute.model.getReferencePoints();
-      referencePoints.splice(1, 0, "Москва, ул. Солянка, 7");
-      multiRoute.model.setReferencePoints(referencePoints, [1]);
-    });
-
-    viaPointButton.events.add('deselect', function () {
-      let referencePoints = multiRoute.model.getReferencePoints();
-      referencePoints.splice(1, 1);
-      multiRoute.model.setReferencePoints(referencePoints, []);
-    });
-
     clearMap();
 
-    let myMap = new ymaps.Map('map', {
-      center: [55.750625, 37.626],
-      zoom: 7,
-      controls: [trafficButton, viaPointButton]
-    }, {
-      //@ts-ignore
-      buttonMaxWidth: 300
-    });
-
+    let myMap = getMap([trafficButton], branchLocation);
     myMap.geoObjects.add(multiRoute);
   };
 
