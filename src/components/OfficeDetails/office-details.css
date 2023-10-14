@@ -68,3 +68,22 @@
   height: 1rem;
   vertical-align: middle;
 }
+
+.office-schedule {
+  display: flex;
+}
+
+.office-details-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  color: #fff;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.5rem;
+  line-height: 2;
+  background-color: var(--color-blue);
+  border-radius: 0.8rem;
+}

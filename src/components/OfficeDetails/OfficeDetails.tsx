@@ -9,6 +9,7 @@ import { OfficeFeatures } from './OfficeFeatures/OfficeFeatures';
 import { IconLocation } from '../Icons/IconLocation';
 import IconAlarm from '../Icons/IconAlarm';
 import { OfficeOpenHours } from './OfficeOpenHours/OfficeOpenHours';
+import IconClue from '../Icons/IconClue';
 
 export const OfficeDetails = () => {
   const { salePointName, address, openHours } = officesData[0];
@@ -43,7 +44,6 @@ export const OfficeDetails = () => {
           </ul>
         </nav>
       </header>
-
       <OfficeFeatures />
       <p className='office-note'>
         <span className='office-small-icon'>
@@ -51,14 +51,17 @@ export const OfficeDetails = () => {
         </span>
         {address}
       </p>
-      <p className='office-note'>
-        <span className='office-small-icon'>
-          <IconAlarm />
-        </span>
+      <div className='office-schedule'>
+        <p className='office-note'>
+          <span className='office-small-icon'>
+            <IconAlarm />
+          </span>
+        </p>
         Режим работы:
-      </p>
+        {openHours.length && <OfficeOpenHours openHours={openHours} />}
+      </div>
 
-      {openHours.length && <OfficeOpenHours openHours={openHours} />}
+      <button type='button' className='office-details-btn'><IconClue />сюда</button>
     </div>
   );
 };
