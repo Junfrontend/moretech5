@@ -2,6 +2,10 @@
   height: 500px;
 }
 
+body {
+  margin: 0;
+}
+
 .wrapper-icon-outer {
   position: relative;
   z-index: -1;

@@ -4,14 +4,14 @@ export const useMap = (currentLoc: any) => {
   const getMap = () => new window.ymaps.Map('map', {
     center: currentLoc,
     zoom: 10,
-    controls: ['geolocationControl', ], // отключение элементов управления geolocationControl - тек локация
+    controls: [], // отключение элементов управления geolocationControl - тек локация
     //@ts-ignore
     type: DARK_MAP,
   }, {
     //@ts-ignore
     searchControlProvider: 'yandex#search'
   });
-
+  
   //@ts-ignore
   const getManager = () => {
     //@ts-ignore

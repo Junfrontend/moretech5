@@ -1,4 +1,4 @@
-import { DRAWER_TYPES } from './../../types/index';
+import { DATA_DISPLAY_TYPE, DRAWER_TYPES } from './../../types/index';
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: any = {
@@ -7,7 +7,8 @@ const initialState: any = {
   lng: null,
   officesList: null,
   isDrawerOpen: false,
-  drawerType: DRAWER_TYPES.DEFAULT
+  drawerType: DRAWER_TYPES.DEFAULT,
+  dataDisplayType: DATA_DISPLAY_TYPE.MAP,
 };
 
 const UserLocationSlice = createSlice({
@@ -38,10 +39,14 @@ const UserLocationSlice = createSlice({
     setDrawerClose: (state) => {
       state.drawerType = false;
       state.isDrawerOpen = false;
+    },
+
+    setDataDisplayType: (state, action) => {
+      state.dataDisplayType = action.payload;
     }
   },
 });
 
 export default UserLocationSlice;
-export const { setUserLocation, clearLocation, setUserLocationWatchId, setDrawerClose, setDrawerOpen } =
+export const { setUserLocation, setDataDisplayType, clearLocation, setUserLocationWatchId, setDrawerClose, setDrawerOpen } =
   UserLocationSlice.actions;
