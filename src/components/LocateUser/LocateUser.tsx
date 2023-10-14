@@ -1,9 +1,11 @@
 import {
+    setDrawerOpen,
   setUserLocation,
   setUserLocationWatchId,
 } from "../../redux/UserLocationSlice/UserLocationSlice";
 import { getCurrentUserLocation } from "../../redux/UserLocationSlice/selectors";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { DRAWER_TYPES } from "../../types";
 
 const LocateUser = () => {
   const { lat, lng } = useAppSelector(getCurrentUserLocation);
@@ -24,15 +26,16 @@ const LocateUser = () => {
   };
 
   const handleUserGeoRequest = () => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(handleUserGeoReceive);
+    dispatch(setDrawerOpen(DRAWER_TYPES.FILTER));
+    // if ("geolocation" in navigator) {
+    //   navigator.geolocation.getCurrentPosition(handleUserGeoReceive);
 
-      const userLocationWatchId =
-        navigator.geolocation.watchPosition(handleUserGeoReceive);
-      setUserLocationWatchId(userLocationWatchId);
-    } else {
-      alert("Гео недоступно");
-    }
+    //   const userLocationWatchId =
+    //     navigator.geolocation.watchPosition(handleUserGeoReceive);
+    //   setUserLocationWatchId(userLocationWatchId);
+    // } else {
+    //   alert("Гео недоступно");
+    // }
   };
 
   return (

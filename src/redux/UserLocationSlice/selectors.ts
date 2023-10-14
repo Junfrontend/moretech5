@@ -10,3 +10,9 @@ export const getCurrentUserLocationWatchId = (state: RootState) =>
 
 export const getOfficeList = (state: RootState) =>
   state.UserLocationSlice.officesList;
+
+export const getIsDrawerOpen = (state: RootState) =>
+  state.UserLocationSlice.isDrawerOpen;
+
+export const getCurrentDrawerType = (state: RootState) =>
+  state.UserLocationSlice.drawerType;

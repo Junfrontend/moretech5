@@ -1,3 +1,4 @@
+import { DRAWER_TYPES } from './../../types/index';
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: any = {
@@ -5,6 +6,8 @@ const initialState: any = {
   lat: null,
   lng: null,
   officesList: null,
+  isDrawerOpen: false,
+  drawerType: DRAWER_TYPES.DEFAULT
 };
 
 const UserLocationSlice = createSlice({
@@ -26,9 +29,19 @@ const UserLocationSlice = createSlice({
     setUserLocationWatchId: (state, action) => {
       state.userLocationWatchId = action.payload;
     },
+
+    setDrawerOpen: (state, action) => {
+      state.drawerType = action.payload;
+      state.isDrawerOpen = true;
+    },
+
+    setDrawerClose: (state) => {
+      state.drawerType = false;
+      state.isDrawerOpen = false;
+    }
   },
 });
 
 export default UserLocationSlice;
-export const { setUserLocation, clearLocation, setUserLocationWatchId } =
+export const { setUserLocation, clearLocation, setUserLocationWatchId, setDrawerClose, setDrawerOpen } =
   UserLocationSlice.actions;
