@@ -16,3 +16,6 @@ export const getIsDrawerOpen = (state: RootState) =>
 
 export const getCurrentDrawerType = (state: RootState) =>
   state.UserLocationSlice.drawerType;
+
+export const getDataDisplayType = (state: RootState) =>
+  state.UserLocationSlice.dataDisplayType;

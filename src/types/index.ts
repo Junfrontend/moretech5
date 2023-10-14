@@ -3,3 +3,8 @@ export const DRAWER_TYPES = {
     OFFICE: 'OFFICE',
     DEFAULT: ''
 }
+
+export const DATA_DISPLAY_TYPE = {
+    MAP: 'MAP',
+    LIST: 'LIST'
+}
