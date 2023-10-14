@@ -13,14 +13,17 @@ import { officesData } from "../../mocks/offices";
 import "./MainMap.css";
 import { Box, Stack } from "@mui/material";
 import HeaderVisabilityType from "../HeaderVisabilityType/HeaderVisabilityType";
-import { DATA_DISPLAY_TYPE } from "../../types";
+import {DATA_DISPLAY_TYPE, DRAWER_TYPES} from "../../types";
 import OfficeList from "../OfficeList/OfficeList";
 import NavBar from "../NavVar/NavBar";
+import {useDispatch} from 'react-redux';
+import {setCurrentOffice, setDrawerOpen} from '../../redux/UserLocationSlice/UserLocationSlice';
 
 const MainMap = () => {
   const displayType = useAppSelector(getDataDisplayType);
-
   const { lat, lng } = useAppSelector(getCurrentUserLocation);
+
+  const dispatch = useDispatch();
 
   const { getMap, getManager, setPins } = useMap([lat, lng]);
 
@@ -60,6 +63,27 @@ const MainMap = () => {
     });
 
     myMap.geoObjects.add(objectManager);
+    myMap.geoObjects.events.add('click', function(e) {
+      let objectId = e.get('objectId');
+
+      if (Number(objectId) <= 0) {
+        return;
+      }
+      let currentOffice: any = null;
+      // todo нужны ID!!!!
+      for (let i = 0; i < officesData.length; i++) {
+        //@ts-ignore
+        if (i + 1 === Number(objectId)) {
+          currentOffice = officesData[i];
+          break;
+        }
+      }
+
+      if (currentOffice) {
+        dispatch(setDrawerOpen(DRAWER_TYPES.OFFICE));
+        dispatch(setCurrentOffice(currentOffice))
+      }
+    });
   }
 
   useEffect(() => {

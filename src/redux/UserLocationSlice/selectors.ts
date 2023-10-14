@@ -19,3 +19,6 @@ export const getCurrentDrawerType = (state: RootState) =>
 
 export const getDataDisplayType = (state: RootState) =>
   state.UserLocationSlice.dataDisplayType;
+
+export const getCurrentOffice = (state: RootState) =>
+  state.UserLocationSlice.currentOffice;

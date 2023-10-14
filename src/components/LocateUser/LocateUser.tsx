@@ -26,7 +26,6 @@ const LocateUser = () => {
   };
 
   const handleUserGeoRequest = () => {
-    dispatch(setDrawerOpen(DRAWER_TYPES.FILTER));
     // if ("geolocation" in navigator) {
     //   navigator.geolocation.getCurrentPosition(handleUserGeoReceive);
 

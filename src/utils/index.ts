@@ -3,7 +3,7 @@ import { busyBranchColors } from '../consts';
 export const getJSONFromOfficies = (officies: any[]) => {
   return officies.map((office, index) => {
     return {
-      "id": index,
+      "id": index + 1,
       "type": "Feature",
       "geometry": {
         "type": "Point",
