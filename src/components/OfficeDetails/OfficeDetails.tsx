@@ -7,8 +7,11 @@ import { IconEmail } from '../Icons/IconEmail';
 import { IconPhone } from '../Icons/IconPhone';
 import { OfficeFeatures } from './OfficeFeatures/OfficeFeatures';
 import { IconLocation } from '../Icons/IconLocation';
+import IconAlarm from '../Icons/IconAlarm';
+import { OfficeOpenHours } from './OfficeOpenHours/OfficeOpenHours';
+
 export const OfficeDetails = () => {
-  const { salePointName, address } = officesData[0];
+  const { salePointName, address, openHours } = officesData[0];
 
   return (
     <div className='office-details'>
@@ -22,11 +25,9 @@ export const OfficeDetails = () => {
               </button>
             </li>
             <li>
-              <a
-                aria-label='расстояние до офиса'
-                className='office-distance'
-              ><IconLocation />
-              <span>200 m</span>
+              <a aria-label='расстояние до офиса' className='office-distance'>
+                <IconLocation />
+                <span>200 m</span>
               </a>
             </li>
             <li>
@@ -35,14 +36,29 @@ export const OfficeDetails = () => {
                 title='Позвонить в оффис'
                 aria-label='Позвонить в оффис'
                 className='office-link'
-              ><IconPhone /></a>
+              >
+                <IconPhone />
+              </a>
             </li>
           </ul>
         </nav>
       </header>
-      
+
       <OfficeFeatures />
-      <p className='office-adress'>{address}</p>
+      <p className='office-note'>
+        <span className='office-small-icon'>
+          <IconLocation />
+        </span>
+        {address}
+      </p>
+      <p className='office-note'>
+        <span className='office-small-icon'>
+          <IconAlarm />
+        </span>
+        Режим работы:
+      </p>
+
+      {openHours.length && <OfficeOpenHours openHours={openHours} />}
     </div>
   );
 };
