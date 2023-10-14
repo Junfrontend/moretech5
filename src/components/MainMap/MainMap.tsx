@@ -3,9 +3,9 @@ import { useAppSelector } from "../../redux/hooks";
 import { getCurrentUserLocation } from "../../redux/UserLocationSlice/selectors";
 
 
-import {useMap} from '../../hooks/useMap';
-import {getJSONFromOfficies} from '../../utils';
-import {officesData} from '../../mocks/offices';
+import { useMap } from '../../hooks/useMap';
+import { getJSONFromOfficies } from '../../utils';
+import { officesData } from '../../mocks/offices';
 
 import './MainMap.css';
 
@@ -33,22 +33,22 @@ const MainMap = () => {
     //@ts-ignore
     ymaps.mapType.storage.add(DARK_MAP, new ymaps.MapType('Dark Map', [DARK_MAP]));
 
-    const myMap = getMap();
+    const myMap = getMap({});
     const objectManager = getManager();
 
     setPins(objectManager, getJSONFromOfficies(officesData));
-
-    // objectManager.clusters.events.add(['mouseenter', 'mouseleave'], (e) => onClusterEvent(e, objectManager));
 
     // локация юсера
     let geolocation = ymaps.geolocation
     geolocation.get({
       provider: 'browser',
-      mapStateAutoApply: true
+      mapStateAutoApply: false,
     }).then(function (result) {
       //@ts-ignore
       result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
       myMap.geoObjects.add(result.geoObjects);
+      //@ts-ignore
+      myMap.setCenter(result.geoObjects.get(0).geometry.getCoordinates(), 13, {duration: 300});
     });
 
     myMap.geoObjects.add(objectManager);

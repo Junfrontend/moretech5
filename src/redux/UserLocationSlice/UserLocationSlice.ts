@@ -15,8 +15,6 @@ const UserLocationSlice = createSlice({
   initialState,
   reducers: {
     setUserLocation: (state, action: PayloadAction<any>) => {
-      console.log(action.payload, 'action payload');
-      
       state.lat = action.payload.lat;
       state.lng = action.payload.lng;
     },

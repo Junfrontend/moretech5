@@ -1,9 +1,11 @@
 import { useDispatch } from 'react-redux';
-import {setDrawerClose, setUserLocation} from '../../redux/UserLocationSlice/UserLocationSlice';
+import {setDrawerClose, setDrawerOpen, setUserLocation} from '../../redux/UserLocationSlice/UserLocationSlice';
 import {FormEvent, useEffect, useState} from 'react';
 import {useAppSelector} from '../../redux/hooks';
 import {getCurrentUserLocation} from '../../redux/UserLocationSlice/selectors';
 import {useMap} from '../../hooks/useMap';
+import {getJSONFromOfficies} from '../../utils';
+import {officesData} from '../../mocks/offices';
 
 const Transport = {
   Car: 'car',
@@ -18,8 +20,21 @@ export default function UserRoute({branchLocation}: any) {
   const currentLocation = useAppSelector(getCurrentUserLocation);
   const [transport, setTransport] = useState('');
   const {
-    getMap
+    getMap,
+    getManager,
+    setPins
   } = useMap(currentLocation);
+
+
+  //@ts-ignore
+  let resetButton = new window.ymaps.control.Button({
+    data: { content: "Сбросить" },
+    options: { selectOnClick: true }
+  });
+
+  resetButton.events.add('click', function () {
+    resetMap();
+  });
 
   const handleUserGeoReceive = (position: any) => {
     dispatch(
@@ -78,7 +93,10 @@ export default function UserRoute({branchLocation}: any) {
 
     clearMap();
 
-    let myMap = getMap([trafficButton], branchLocation);
+    let myMap = getMap({
+      controls: [trafficButton, resetButton],
+      loc: branchLocation
+    });
     myMap.geoObjects.add(multiRoute);
   };
 
@@ -96,6 +114,8 @@ export default function UserRoute({branchLocation}: any) {
     }, {
       boundsAutoApply: true
     });
+
+
 
     let changeLayoutButton = new ymaps.control.Button({
       data: { content: "Изменить макет подписи для пеших сегментов"},
@@ -117,16 +137,11 @@ export default function UserRoute({branchLocation}: any) {
 
     clearMap();
 
-    let myMap = new ymaps.Map('map', {
-      center: [55.739625, 37.54120],
-      zoom: 12,
-      controls: [changeLayoutButton]
-    }, {
-      //@ts-ignore
-      buttonMaxWidth: 350
+    let myMap = getMap({
+      loc: branchLocation,
+      controls: [resetButton],
     });
-
-    // Добавляем мультимаршрут на карту.
+    //@ts-ignore
     myMap.geoObjects.add(multiRoute);
   };
 
@@ -160,13 +175,9 @@ export default function UserRoute({branchLocation}: any) {
 
     clearMap();
 
-    let myMap = new ymaps.Map('map', {
-      center: [55.739625, 37.54120],
-      zoom: 12,
-      controls: [changePointsButton]
-    }, {
-      //@ts-ignore
-      buttonMaxWidth: 300
+    let myMap = getMap({
+      loc: branchLocation,
+      controls: [resetButton],
     });
 
     myMap.geoObjects.add(multiRoute);
@@ -204,13 +215,9 @@ export default function UserRoute({branchLocation}: any) {
 
     clearMap();
 
-    let myMap = new ymaps.Map('map', {
-      center: [55.739625, 37.54120],
-      zoom: 12,
-      controls: [changePointsButton]
-    }, {
-      //@ts-ignore
-      buttonMaxWidth: 300
+    let myMap = getMap({
+      loc: branchLocation,
+      controls: [resetButton],
     });
 
     myMap.geoObjects.add(multiRoute);
@@ -221,12 +228,10 @@ export default function UserRoute({branchLocation}: any) {
     const ymaps = window.ymaps;
     clearMap();
 
-    let myMap = new ymaps.Map('map', {
-      center: [55.77, 37.60],
-      zoom: 13,
-      controls: []
+    let myMap = getMap({
+      loc: branchLocation,
+      controls: [resetButton],
     });
-
 
     let routePanelControl = new ymaps.control.RoutePanel({
       options: {
@@ -264,6 +269,45 @@ export default function UserRoute({branchLocation}: any) {
     routePanelControl.routePanel.geolocate('from');
   };
 
+  const resetMap = () => {
+    clearMap();
+
+    const DARK_MAP = 'custom#dark';
+    //@ts-ignore
+    const ymaps = window.ymaps;
+    //@ts-ignore
+    ymaps.layer.storage.add(DARK_MAP, function DarkLayer() {
+      //@ts-ignore
+      return new window.ymaps.Layer(
+        'https://core-renderer-tiles.maps.yandex.net/tiles?l=map&theme=dark&%c&%l&scale={{ scale }}',
+      );
+    });
+    //@ts-ignore
+    ymaps.mapType.storage.add(DARK_MAP, new ymaps.MapType('Dark Map', [DARK_MAP]));
+
+    const myMap = getMap({
+      loc: branchLocation
+    });
+    const objectManager = getManager();
+
+    setPins(objectManager, getJSONFromOfficies(officesData));
+
+    // локация юсера
+    let geolocation = ymaps.geolocation
+    geolocation.get({
+      provider: 'browser',
+      mapStateAutoApply: false,
+    }).then(function (result) {
+      //@ts-ignore
+      result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+      myMap.geoObjects.add(result.geoObjects);
+      //@ts-ignore
+      myMap.setCenter(branchLocation || [currentLocation.lat, currentLocation.lng], 10, {duration: 300});
+    });
+
+    myMap.geoObjects.add(objectManager);
+  };
+
   const handleRouteSelect = (evt: FormEvent) => {
     evt.preventDefault();
     dispatch(setDrawerClose());
@@ -287,6 +331,10 @@ export default function UserRoute({branchLocation}: any) {
       }
       case 'taxi': {
         setTaxiRoute();
+        break;
+      }
+      default: {
+        resetMap();
         break;
       }
     }
@@ -325,7 +373,7 @@ export default function UserRoute({branchLocation}: any) {
         </label>
 
         <label>
-          Пешеходный (?)
+          Пеший
           <input
             name="transport"
             type="radio"
@@ -347,17 +395,6 @@ export default function UserRoute({branchLocation}: any) {
         </label>
 
         <label>
-          Самокат
-          <input
-            name="transport"
-            type="radio"
-            value="scooter"
-            checked={isChecked('scooter')}
-            onChange={() => setTransport('scooter')}
-          />
-        </label>
-
-        <label>
           Такси
           <input
             name="transport"
@@ -369,7 +406,6 @@ export default function UserRoute({branchLocation}: any) {
         </label>
         <button type="submit">Сюда</button>
       </form>
-
     </>
   );
 }
