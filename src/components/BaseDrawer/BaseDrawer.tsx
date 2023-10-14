@@ -46,6 +46,9 @@ export default function BaseDrawer({ children }: any) {
       case DRAWER_TYPES.FILTER:
         // Компонент для начинки Drawer`а
         return <span>ФИЛЬТРЫ</span>;
+      case DRAWER_TYPES.OFFICE:
+        // Компонент для начинки Drawer`а
+        return <span>OFFICE</span>;
     }
   };
 
