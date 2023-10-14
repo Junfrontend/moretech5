@@ -13,10 +13,9 @@ body {
 }
 
 .app-desktop {
-  /* align-items: flex-start; */
-  height: 100vh;
-
+  max-height: calc(100vh - 170px);
   & > .MuiStack-root {
+    overflow: auto;
     padding: 2rem;
   }
 }

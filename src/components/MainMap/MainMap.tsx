@@ -107,7 +107,7 @@ const MainMap = () => {
         )}
         {displayType === DATA_DISPLAY_TYPE.LIST && <OfficeList />}
       </Stack>
-      {!isDesktop && <NavBar />}
+      <NavBar />
     </Stack>
   );
 };
