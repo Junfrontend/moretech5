@@ -13,7 +13,7 @@ const HeaderVisabilityType = () => {
   const buttonStyle = {
     textTransform: "capitalize",
     width: "100%",
-    border: '2px solid #FFF !important',
+    border: '2px solid var(--color-background) !important',
     fontSize: "16px",
     borderRadius: "14px !important",
     fontWeight: "500",
@@ -26,7 +26,7 @@ const HeaderVisabilityType = () => {
         top: 0,
         right: 0,
         left: 0,
-        backgroundColor: "#FFF",
+        backgroundColor: "var(--color-background)",
         p: "15px 10px",
         zIndex: 10
       }}
@@ -40,14 +40,14 @@ const HeaderVisabilityType = () => {
           width: "99%",
           borderRadius: "16px",
           border: "2px solid #1350AE",
-          outline: "4px solid #FFF",
+          outline: "4px solid var(--color-background)",
         }}
       >
         <ToggleButton
           sx={{
             ...buttonStyle,
             backgroundColor:
-              displayType === DATA_DISPLAY_TYPE.LIST ? "#1350AE !important" : "#FFF",
+              displayType === DATA_DISPLAY_TYPE.LIST ? "#1350AE !important" : "var(--color-background)",
             color: displayType === DATA_DISPLAY_TYPE.LIST ? "#FFF !important" :"#1350AE",
           }}
           value={DATA_DISPLAY_TYPE.LIST}
@@ -59,7 +59,7 @@ const HeaderVisabilityType = () => {
           sx={{
             ...buttonStyle,
             backgroundColor:
-              displayType === DATA_DISPLAY_TYPE.MAP ? "#1350AE !important" : "#FFF",
+              displayType === DATA_DISPLAY_TYPE.MAP ? "#1350AE !important" : "var(--color-background)",
             color: displayType === DATA_DISPLAY_TYPE.MAP ? "#FFF !important" :"#1350AE",
           }}
           value={DATA_DISPLAY_TYPE.MAP}

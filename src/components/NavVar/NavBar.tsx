@@ -39,7 +39,7 @@ const NavBar = () => {
   return (
     <AppBar
       position="fixed"
-      sx={{ top: "auto", bottom: 0, backgroundColor: "#FFF" }}
+      sx={{ top: "auto", bottom: 0, backgroundColor: "var(--color-background)" }}
     >
       <Toolbar>
         <Stack
@@ -52,7 +52,7 @@ const NavBar = () => {
           <IconButton>
             <TuneIcon
               sx={{
-                color: "#000",
+                color: "var(--color-text)",
               }}
             />
           </IconButton>
@@ -63,7 +63,7 @@ const NavBar = () => {
           <IconButton onClick={handleUserGeoRequest}>
             <ExploreIcon
               sx={{
-                color: "#000",
+                color: "var(--color-text)",
               }}
             />
           </IconButton>
