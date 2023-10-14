@@ -1,9 +1,24 @@
 .map {
-  height: 500px;
+  min-height: 500px;
+  height: 100vh!important;
+  min-width: 50vw!important;
+
+  & + div {
+    height: 100%;
+  }
 }
 
 body {
   margin: 0;
+}
+
+.app-desktop {
+  /* align-items: flex-start; */
+  height: 100vh;
+
+  & > .MuiStack-root {
+    padding: 2rem;
+  }
 }
 
 .wrapper-icon-outer {
