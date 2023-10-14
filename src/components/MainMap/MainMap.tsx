@@ -1,12 +1,6 @@
 import { useEffect } from "react";
-import Toolbar from "@mui/material/Toolbar";
-import AppBar from "@mui/material/AppBar";
-import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
-import TuneIcon from "@mui/icons-material/Tune";
-import ExploreIcon from "@mui/icons-material/Explore";
 
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import {
   getCurrentUserLocation,
   getDataDisplayType,
@@ -20,16 +14,13 @@ import "./MainMap.css";
 import { Box, Stack } from "@mui/material";
 import HeaderVisabilityType from "../HeaderVisabilityType/HeaderVisabilityType";
 import { DATA_DISPLAY_TYPE } from "../../types";
-import {
-  setUserLocation,
-  setUserLocationWatchId,
-} from "../../redux/UserLocationSlice/UserLocationSlice";
+import OfficeList from "../OfficeList/OfficeList";
+import NavBar from "../NavVar/NavBar";
 
 const MainMap = () => {
   const displayType = useAppSelector(getDataDisplayType);
 
   const { lat, lng } = useAppSelector(getCurrentUserLocation);
-  const dispatch = useAppDispatch();
 
   const { getMap, getManager, setPins } = useMap([lat, lng]);
 
@@ -58,17 +49,17 @@ const MainMap = () => {
     // objectManager.clusters.events.add(['mouseenter', 'mouseleave'], (e) => onClusterEvent(e, objectManager));
 
     // локация юсера
-    // let geolocation = ymaps.geolocation;
-    // geolocation
-    //   .get({
-    //     provider: "browser",
-    //     mapStateAutoApply: true,
-    //   })
-    //   .then(function (result) {
-    //     //@ts-ignore
-    //     result.geoObjects.options.set("preset", "islands#blueCircleIcon");
-    //     myMap.geoObjects.add(result.geoObjects);
-    //   });
+    let geolocation = ymaps.geolocation;
+    geolocation
+      .get({
+        provider: "browser",
+        mapStateAutoApply: true,
+      })
+      .then(function (result) {
+        //@ts-ignore
+        result.geoObjects.options.set("preset", "islands#blueCircleIcon");
+        myMap.geoObjects.add(result.geoObjects);
+      });
 
     myMap.geoObjects.add(objectManager);
   }
@@ -84,42 +75,20 @@ const MainMap = () => {
     }
   }, [displayType]);
 
-  useEffect(() => {
-    const myMap = getMap();
-    
-    // @ts-ignore
-    // const myGeoObject = new window.ymaps.GeoObject({
-    //   geometry: {
-    //     type: "Point", // тип геометрии - точка
-    //     // @ts-ignore
-    //     coordinates: [lat, lng], // координаты точки
-    //   },
-    // });
+  // useEffect(() => {
+  //   // const myMap = getMap();
 
-    // myMap.geoObjects.add(myGeoObject);
-  }, [lat, lng]);
+  //   // @ts-ignore
+  //   // const myGeoObject = new window.ymaps.GeoObject({
+  //   //   geometry: {
+  //   //     type: "Point", // тип геометрии - точка
+  //   //     // @ts-ignore
+  //   //     coordinates: [lat, lng], // координаты точки
+  //   //   },
+  //   // });
 
-  const handleUserGeoReceive = (position: any) => {
-    dispatch(
-      setUserLocation({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      })
-    );
-  };
-
-  const handleUserGeoRequest = () => {
-    // dispatch(setDrawerOpen(DRAWER_TYPES.FILTER));
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(handleUserGeoReceive);
-
-      const userLocationWatchId =
-        navigator.geolocation.watchPosition(handleUserGeoReceive);
-      dispatch(setUserLocationWatchId(userLocationWatchId));
-    } else {
-      alert("Гео недоступно");
-    }
-  };
+  //   // window.ymaps.geoObjects.add(myGeoObject);
+  // }, [lat, lng]);
 
   return (
     <Stack direction={"column"}>
@@ -128,51 +97,9 @@ const MainMap = () => {
         {displayType === DATA_DISPLAY_TYPE.MAP && (
           <div id="map" className="map" />
         )}
-        {displayType === DATA_DISPLAY_TYPE.LIST && <div>ШПЫСОК</div>}
+        {displayType === DATA_DISPLAY_TYPE.LIST && <OfficeList />}
       </Stack>
-      <AppBar
-        position="fixed"
-        sx={{ top: "auto", bottom: 0, backgroundColor: "#FFF" }}
-      >
-        <Toolbar>
-          <Stack
-            justifyContent={"space-between"}
-            alignItems={"center"}
-            direction={"row"}
-            width={"100%"}
-          >
-            <IconButton>
-              <TuneIcon
-                sx={{
-                  color: "#000",
-                }}
-              />
-            </IconButton>
-            <IconButton
-              sx={{
-                backgroundColor: "#165BC6",
-                borderRadius: "12px",
-                position: "relative",
-                bottom: "20px",
-                margin: "0 auto",
-              }}
-            >
-              <SearchIcon
-                sx={{
-                  color: "#FFF",
-                }}
-              />
-            </IconButton>
-            <IconButton onClick={handleUserGeoRequest}>
-              <ExploreIcon
-                sx={{
-                  color: "#000",
-                }}
-              />
-            </IconButton>
-          </Stack>
-        </Toolbar>
-      </AppBar>
+      <NavBar />
     </Stack>
   );
 };

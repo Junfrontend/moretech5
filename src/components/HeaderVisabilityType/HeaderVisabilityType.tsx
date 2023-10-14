@@ -13,9 +13,9 @@ const HeaderVisabilityType = () => {
   const buttonStyle = {
     textTransform: "capitalize",
     width: "100%",
-    border: "none",
+    border: '3px solid #FFF !important',
     fontSize: "16px",
-    borderRadius: "13px",
+    borderRadius: "12px !important",
     fontWeight: "500",
   };
 
@@ -41,7 +41,7 @@ const HeaderVisabilityType = () => {
         <ToggleButton
           sx={{
             ...buttonStyle,
-
+            ml: '4px',
             backgroundColor:
               displayType === DATA_DISPLAY_TYPE.LIST ? "#1350AE !important" : "#FFF",
             color: displayType === DATA_DISPLAY_TYPE.LIST ? "#FFF !important" :"#1350AE",
