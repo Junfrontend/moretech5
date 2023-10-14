@@ -9,7 +9,6 @@ const Transport = {
   Public: 'public',
   Walking: 'walking',
   Bicycle: 'bicycle',
-// todo САМОКАТ НЕ РИСУЕТ МАРШРУТ
   Taxi: 'taxi'
 }
 
@@ -297,7 +296,6 @@ export default function UserRoute({branchLocation}: any) {
         setBicycleRoute();
         break;
       }
-      // todo САМОКАТ НЕ РИСУЕТ МАРШРУТ
       case 'taxi': {
         setTaxiRoute();
         break;
