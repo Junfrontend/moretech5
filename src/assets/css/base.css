@@ -71,3 +71,9 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  .App {
+    padding: 88px 0;
+    height: 100vh;
+    overflow: hidden;
+  }

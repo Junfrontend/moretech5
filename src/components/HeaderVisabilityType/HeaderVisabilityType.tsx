@@ -22,8 +22,13 @@ const HeaderVisabilityType = () => {
   return (
     <Box
       sx={{
+        position: "absolute",
+        top: 0,
+        right: 0,
+        left: 0,
         backgroundColor: "#FFF",
         p: "15px 10px",
+        zIndex: 10
       }}
     >
       <ToggleButtonGroup
