@@ -5,7 +5,8 @@ import { officesData } from '../../mocks/offices';
 import { IconBookmark } from '../Icons/IconBookmark';
 import { IconEmail } from '../Icons/IconEmail';
 import { IconPhone } from '../Icons/IconPhone';
-
+import { OfficeFeatures } from './OfficeFeatures/OfficeFeatures';
+import { IconLocation } from '../Icons/IconLocation';
 export const OfficeDetails = () => {
   const { salePointName, address } = officesData[0];
 
@@ -22,24 +23,25 @@ export const OfficeDetails = () => {
             </li>
             <li>
               <a
+                aria-label='расстояние до офиса'
+                className='office-distance'
+              ><IconLocation />
+              <span>200 m</span>
+              </a>
+            </li>
+            <li>
+              <a
                 href='tel:+79001111111'
                 title='Позвонить в оффис'
                 aria-label='Позвонить в оффис'
                 className='office-link'
               ><IconPhone /></a>
             </li>
-            <li>
-              <a
-                href={`mailto:blog@htmlacademy.ru&cc=mail@htmlacademy.ru?body=Привет, подпишитесь на рассылку`}
-                title='Позвонить в оффис'
-                aria-label='Позвонить в оффис'
-                className='office-link'
-              ><IconEmail /></a>
-            </li>
           </ul>
         </nav>
       </header>
       
+      <OfficeFeatures />
       <p className='office-adress'>{address}</p>
     </div>
   );

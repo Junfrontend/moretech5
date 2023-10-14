@@ -1,0 +1,22 @@
+.office-features-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0 0 1rem;
+    list-style: none;
+}
+
+.office-features-item {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.office-feature {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    color: #fff;
+    background-color: var(--color-blue);
+    border-radius: 0.8rem;
+}
