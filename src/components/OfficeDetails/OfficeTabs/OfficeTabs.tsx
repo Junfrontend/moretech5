@@ -3,12 +3,48 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-
+import { OfficeChars } from '../OfficeChars/OfficeChars';
+import OfficeTags from '../OfficeTags/OfficeTags';
+import SimpleListMenu from '../SimpleListMenu/SimpleListMenu';
+import './office-tabs.css';
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
+
+const chars = [
+  {
+    day: 0,
+    count: 21,
+  },
+  {
+    day: 1,
+    count: 16,
+  },
+  {
+    day: 2,
+    count: 16,
+  },
+  {
+    day: 3,
+    count: 17,
+  },
+  {
+    day: 4,
+    count: 15,
+  },
+  {
+    day: 5,
+    count: 22,
+  },
+  {
+    day: 6,
+    count: 17,
+  },
+];
+
+const options = ['По дням', 'По часам'];
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -22,7 +58,7 @@ function CustomTabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -46,7 +82,7 @@ export default function OfficeTabs() {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Box mb={2}>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -57,10 +93,19 @@ export default function OfficeTabs() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        Физ лицам
+        <OfficeTags />
+        <div className='office-menu-list'>
+          Загруженность:
+          <SimpleListMenu options={options} />
+        </div>
+        <OfficeChars chars={chars} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        Юр лицам
+        <div className='office-menu-list'>
+          Загруженность:
+          <SimpleListMenu options={options} />
+        </div>
+        <OfficeChars chars={chars} />
       </CustomTabPanel>
     </Box>
   );

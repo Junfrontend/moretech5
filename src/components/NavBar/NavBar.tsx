@@ -1,11 +1,10 @@
 import Toolbar from "@mui/material/Toolbar";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
 import TuneIcon from "@mui/icons-material/Tune";
 import ExploreIcon from "@mui/icons-material/Explore";
 import { Stack } from "@mui/material";
-
+import { IconsSearch } from "../Icons/IconsSearch";
 import {
   setDataDisplayType,
   setDrawerOpen,
@@ -15,16 +14,11 @@ import {
 import { useAppDispatch } from "../../redux/hooks";
 import { DATA_DISPLAY_TYPE, DRAWER_TYPES } from "../../types";
 
-const NavBar = () => {
+const NavBar = ({ setMapCenter }: any) => {
   const dispatch = useAppDispatch();
 
-  const handleUserGeoReceive = (position: any) => {
-    dispatch(
-      setUserLocation({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      })
-    );
+  const handleFilterOpen = () => {
+    dispatch(setDrawerOpen(DRAWER_TYPES.FILTER))
   };
 
   const handleSearchIconClick = () => {
@@ -45,10 +39,17 @@ const NavBar = () => {
     }
   };
 
+  const handleLocationClick = () => {
+    const map = document.querySelector('#map');
+    if (map) {
+      setMapCenter();
+    }
+  };
+
   return (
     <AppBar
       position="fixed"
-      sx={{ top: "auto", bottom: 0, backgroundColor: "#FFF" }}
+      sx={{ top: "auto", bottom: 0, backgroundColor: "var(--color-background)" }}
     >
       <Toolbar>
         <Stack
@@ -56,34 +57,23 @@ const NavBar = () => {
           alignItems={"center"}
           direction={"row"}
           width={"100%"}
+          height={"80px"}
         >
-          <IconButton>
+          <IconButton onClick={handleFilterOpen}>
             <TuneIcon
               sx={{
-                color: "#000",
+                color: "var(--color-text)",
               }}
             />
           </IconButton>
-          <IconButton
-          onClick={handleSearchIconClick}
-            sx={{
-              backgroundColor: "#165BC6",
-              borderRadius: "12px",
-              position: "relative",
-              bottom: "20px",
-              margin: "0 auto",
-            }}
+          <button onClick={handleSearchIconClick} type="button" aria-label='search' className="search-btn"
           >
-            <SearchIcon
-              sx={{
-                color: "#FFF",
-              }}
-            />
-          </IconButton>
-          <IconButton onClick={handleUserGeoRequest}>
+            <IconsSearch />
+          </button>
+          <IconButton onClick={handleLocationClick}>
             <ExploreIcon
               sx={{
-                color: "#000",
+                color: "var(--color-text)",
               }}
             />
           </IconButton>
