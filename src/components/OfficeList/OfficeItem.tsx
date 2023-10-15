@@ -1,14 +1,11 @@
-import { Box, Stack, Typography, Chip } from '@mui/material';
+import { Stack } from '@mui/material';
 import LocationMark from '../LocationMark/LocationMark';
+import { Chip } from '@mui/material';
 import './office-item.css';
-import {getRandomInt} from '../../utils';
-import {
-  busyClassNames,
-  busyLabels,
-} from '../../consts';
+import { getRandomInt } from '../../utils';
+import { busyClassNames, busyLabels } from '../../consts';
 
 function calculateWorkloadPercentage(workload: any) {
-
   // Находим общее количество count за все дни
   const total = 30;
 
@@ -63,11 +60,17 @@ const OfficeItem = (props: any) => {
       <Stack direction={'row'} py={'10px'}>
         {/* Загрузка */}
       </Stack>
-      <Stack direction={"row"} py={"10px"} alignItems={'center'} className={'branch-busy-info'}>
-        <p className='office-item-busy'>
-         Загруженность:
-        </p>
-        <Chip label={busyBranchInfo.label} className={`busy-level-${busyBranchInfo.className}`} />
+      <Stack
+        direction={'row'}
+        py={'10px'}
+        alignItems={'center'}
+        className={'branch-busy-info'}
+      >
+        <p className='office-item-busy'>Загруженность:</p>
+        <Chip
+          label={busyBranchInfo.label}
+          className={`busy-level-${busyBranchInfo.className}`}
+        />
       </Stack>
     </Stack>
   );

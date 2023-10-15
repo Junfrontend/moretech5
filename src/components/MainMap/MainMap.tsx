@@ -1,60 +1,70 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
   getCurrentUserLocation,
   getDataDisplayType,
-} from "../../redux/UserLocationSlice/selectors";
+  getOfficeList,
+} from '../../redux/UserLocationSlice/selectors';
 
-import { useMap } from "../../hooks/useMap";
-import { getJSONFromOfficies } from "../../utils";
-import { officesData } from "../../mocks/offices";
+import { useMap } from '../../hooks/useMap';
+import { getJSONFromOfficies } from '../../utils';
+// import { officesData } from '../../mocks/offices';
 
-import "./MainMap.css";
-import { Box, Stack, useMediaQuery } from "@mui/material";
-import HeaderVisabilityType from "../HeaderVisabilityType/HeaderVisabilityType";
-import {DATA_DISPLAY_TYPE, DRAWER_TYPES} from "../../types";
-import OfficeList from "../OfficeList/OfficeList";
-import NavBar from "../NavVar/NavBar";
-import { AppLogo } from "../AppLogo/AppLogo";
+import './MainMap.css';
+import { Box, Stack } from '@mui/material';
+import HeaderVisabilityType from '../HeaderVisabilityType/HeaderVisabilityType';
+import { DATA_DISPLAY_TYPE } from '../../types';
+import OfficeList from '../OfficeList/OfficeList';
+import NavBar from '../NavVar/NavBar';
+import { setOffices } from '../../redux/UserLocationSlice/UserLocationSlice';
+import { fetchOfficesAction } from '../../redux/UserLocationSlice/asyncActions';
+import { PointEnum } from '../../types/office';
+import './MainMap.css';
+import { useMediaQuery } from '@mui/material';
+import { DRAWER_TYPES } from '../../types';
+import { useDispatch } from 'react-redux';
+import {
+  setCurrentOffice,
+  setDrawerOpen,
+} from '../../redux/UserLocationSlice/UserLocationSlice';
+import { AppLogo } from '../AppLogo/AppLogo';
 
 const Map = () => {
-  return <div id="map" className="map" />
-}
-
-import {useDispatch} from 'react-redux';
-import {setCurrentOffice, setDrawerOpen} from '../../redux/UserLocationSlice/UserLocationSlice';
+  return <div id='map' className='map' />;
+};
 
 const MainMap = () => {
   const isDesktop = useMediaQuery('(min-width:1024px)');
   const displayType = useAppSelector(getDataDisplayType);
+  const dispatch = useAppDispatch();
+
   const { lat, lng } = useAppSelector(getCurrentUserLocation);
+  const officesData = useAppSelector(getOfficeList);
 
-  let map:any = null;
+  let map: any = null;
 
-  const dispatch = useDispatch();
-
-  const {
-    setMap,
-    getManager,
-    setPins,
-  } = useMap([lat, lng]);
+  const { setMap, getManager, setPins } = useMap([lat, lng]);
 
   const setLocation = (map: any) => {
     //@ts-ignore
     const ymaps = window.ymaps;
     let geolocation = ymaps.geolocation;
 
-    geolocation.get({
-      provider: 'browser',
-      mapStateAutoApply: false,
-    }).then(function (result) {
-      //@ts-ignore
-      result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
-      map.geoObjects.add(result.geoObjects);
-      //@ts-ignore
-      map.setCenter(result.geoObjects.get(0).geometry.getCoordinates(), 13, {duration: 300});
-    });
+    geolocation
+      .get({
+        provider: 'browser',
+        mapStateAutoApply: false,
+      })
+      .then(function (result) {
+        //@ts-ignore
+        result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+        map.geoObjects.add(result.geoObjects);
+        //@ts-ignore
+        map.setCenter(result.geoObjects.get(0).geometry.getCoordinates(), 13, {
+          duration: 300,
+        });
+      });
   };
 
   const setNewMap = () => {
@@ -62,30 +72,33 @@ const MainMap = () => {
   };
 
   function init() {
-    const DARK_MAP = "custom#dark";
+    const DARK_MAP = 'custom#dark';
     //@ts-ignore
     const ymaps = window.ymaps;
     //@ts-ignore
     ymaps.layer.storage.add(DARK_MAP, function DarkLayer() {
       //@ts-ignore
       return new window.ymaps.Layer(
-        "https://core-renderer-tiles.maps.yandex.net/tiles?l=map&theme=dark&%c&%l&scale={{ scale }}"
+        'https://core-renderer-tiles.maps.yandex.net/tiles?l=map&theme=dark&%c&%l&scale={{ scale }}'
       );
     });
     //@ts-ignore
     ymaps.mapType.storage.add(
       DARK_MAP,
-      new ymaps.MapType("Dark Map", [DARK_MAP])
+      new ymaps.MapType('Dark Map', [DARK_MAP])
     );
 
     setNewMap();
     const objectManager = getManager();
-    setPins(objectManager, getJSONFromOfficies(officesData));
+
+    if (officesData) {
+      setPins(objectManager, getJSONFromOfficies(officesData));
+    }
 
     // локация юсера
     setLocation(map);
     map.geoObjects.add(objectManager);
-    map.geoObjects.events.add('click', function(e: any) {
+    map.geoObjects.events.add('click', function (e: any) {
       let objectId: string = e.get('objectId');
 
       if (Number(objectId) <= 0) {
@@ -94,17 +107,19 @@ const MainMap = () => {
       let currentOffice: any = null;
       // todo нужны ID!!!!
 
-      for (let i = 0; i < officesData.length; i++) {
-        //@ts-ignore
-        if (i + 1 === Number(objectId)) {
-          currentOffice = officesData[i];
-          break;
+      if (officesData) {
+        for (let i = 0; i < officesData.length; i++) {
+          //@ts-ignore
+          if (i + 1 === Number(objectId)) {
+            currentOffice = officesData[i];
+            break;
+          }
         }
       }
 
       if (currentOffice) {
         dispatch(setDrawerOpen(DRAWER_TYPES.OFFICE));
-        dispatch(setCurrentOffice(currentOffice))
+        dispatch(setCurrentOffice(currentOffice));
       }
     });
   }
@@ -118,20 +133,39 @@ const MainMap = () => {
   };
 
   useEffect(() => {
+    dispatch(
+      fetchOfficesAction({
+        downLimitLatitude: 50,
+        leftLimitLongitude: 40,
+        rightLimitLongitude: 30,
+        upLimitLatitude: 60,
+        pointType: PointEnum.OFFICE,
+      })
+    );
+  }, []);
+
+  useEffect(() => {
     //@ts-ignore
-    if (window.ymaps && displayType === DATA_DISPLAY_TYPE.MAP) {
+    if (window.ymaps && displayType === DATA_DISPLAY_TYPE.MAP && officesData) {
       window.ymaps.ready(init);
     }
-  }, [displayType]);
+  }, [displayType, officesData]);
 
   return (
-    <Stack direction={"column"}>
-      <Stack className={isDesktop ? 'app-desktop' : ''} direction={isDesktop ? "row" : "column"} height={"100wh"}>
+    <Stack direction={'column'}>
+      <Stack
+        className={isDesktop ? 'app-desktop' : ''}
+        direction={isDesktop ? 'row' : 'column'}
+        height={'100wh'}
+      >
         {!isDesktop && <HeaderVisabilityType />}
-        {isDesktop && <><AppLogo /><OfficeList /></>}
-        {displayType === DATA_DISPLAY_TYPE.MAP && (
-          <Map />
+        {isDesktop && (
+          <>
+            <AppLogo />
+            <OfficeList />
+          </>
         )}
+        {displayType === DATA_DISPLAY_TYPE.MAP && <Map />}
         {displayType === DATA_DISPLAY_TYPE.LIST && <OfficeList />}
       </Stack>
       <NavBar setMapCenter={setMapCenter} />

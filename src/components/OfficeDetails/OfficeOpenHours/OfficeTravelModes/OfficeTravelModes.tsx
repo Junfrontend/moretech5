@@ -1,53 +1,51 @@
-import React, {FormEvent, useState} from 'react';
+import React, { FormEvent, useState } from 'react';
 import IconYaCar from '../../../Icons/IconYaCar';
 import IconYaBus from '../../../Icons/IconYaBus';
 import IconYaWalk from '../../../Icons/IconYaWalk';
 import IconYaMoto from '../../../Icons/IconYaMoto';
 import { IconYaTaxi } from '../../../Icons/IconYaTaxi';
 import './office-travel-modes.css';
-import {useDispatch} from 'react-redux';
-import {useAppSelector} from '../../../../redux/hooks';
-import {getCurrentOffice, getCurrentUserLocation } from '../../../../redux/UserLocationSlice/selectors';
-import {useMap} from '../../../../hooks/useMap';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../../../redux/hooks';
+import {
+  getCurrentOffice,
+  getCurrentUserLocation,
+} from '../../../../redux/UserLocationSlice/selectors';
+import { useMap } from '../../../../hooks/useMap';
 import {
   setCurrentOffice,
   setDrawerClose,
   setDrawerOpen,
-  setUserLocation
+  setUserLocation,
 } from '../../../../redux/UserLocationSlice/UserLocationSlice';
-import {getJSONFromOfficies} from '../../../../utils';
-import {officesData} from '../../../../mocks/offices';
+import { getJSONFromOfficies } from '../../../../utils';
+import { officesData } from '../../../../mocks/offices';
 import IconClue from '../../../Icons/IconClue';
-import {DRAWER_TYPES} from '../../../../types';
-
+import { DRAWER_TYPES } from '../../../../types';
 
 const Transport = {
   Car: 'car',
   Public: 'public',
   Walking: 'walking',
   Bicycle: 'bicycle',
-  Taxi: 'taxi'
-}
+  Taxi: 'taxi',
+};
 
 export const OfficeTravelModes = () => {
   const dispatch = useDispatch();
   const currentLocation = useAppSelector(getCurrentUserLocation);
   const currentOffice = useAppSelector(getCurrentOffice);
-  const branchLocation = [currentOffice.latitude, currentOffice.longitude];
+  const branchLocation = [currentOffice?.latitude, currentOffice?.longitude];
 
   let map: any = null;
 
   const [transport, setTransport] = useState('');
-  const {
-    setMap,
-    getManager,
-    setPins
-  } = useMap(currentLocation);
+  const { setMap, getManager, setPins } = useMap(currentLocation);
 
   //@ts-ignore
   let resetButton = new window.ymaps.control.Button({
-    data: { content: "Сбросить" },
-    options: { selectOnClick: true }
+    data: { content: 'Сбросить' },
+    options: { selectOnClick: true },
   });
 
   resetButton.events.add('click', function () {
@@ -75,31 +73,33 @@ export const OfficeTravelModes = () => {
   const setCarMapRoute = () => {
     const ymaps = window.ymaps;
     //@ts-ignore
-    let multiRoute = new ymaps.multiRouter.MultiRoute({
-      referencePoints: [
-        [currentLocation.lat, currentLocation.lng],
-        branchLocation
-      ],
-      params: {
-        results: 2
+    let multiRoute = new ymaps.multiRouter.MultiRoute(
+      {
+        referencePoints: [
+          [currentLocation.lat, currentLocation.lng],
+          branchLocation,
+        ],
+        params: {
+          results: 2,
+        },
+      },
+      {
+        boundsAutoApply: true,
+        wayPointStartIconColor: '#FFFFFF',
+        wayPointStartIconFillColor: '#B3B3B3',
+        // Внешний вид линии активного маршрута.
+        routeActiveStrokeWidth: 8,
+        routeActiveStrokeStyle: 'solid',
+        routeActiveStrokeColor: '#002233',
+        // Внешний вид линий альтернативных маршрутов.
+        routeStrokeStyle: 'dot',
+        routeStrokeWidth: 3,
       }
-    }, {
-      boundsAutoApply: true,
-      wayPointStartIconColor: "#FFFFFF",
-      wayPointStartIconFillColor: "#B3B3B3",
-      // Внешний вид линии активного маршрута.
-      routeActiveStrokeWidth: 8,
-      routeActiveStrokeStyle: 'solid',
-      routeActiveStrokeColor: "#002233",
-      // Внешний вид линий альтернативных маршрутов.
-      routeStrokeStyle: 'dot',
-      routeStrokeWidth: 3,
-    });
-
+    );
 
     let trafficButton = new ymaps.control.Button({
-      data: { content: "Учитывать пробки" },
-      options: { selectOnClick: true }
+      data: { content: 'Учитывать пробки' },
+      options: { selectOnClick: true },
     });
 
     trafficButton.events.add('select', function () {
@@ -114,7 +114,7 @@ export const OfficeTravelModes = () => {
 
     map = setMap({
       controls: [trafficButton, resetButton],
-      loc: branchLocation
+      loc: branchLocation,
     });
     map.geoObjects.add(multiRoute);
   };
@@ -122,36 +122,39 @@ export const OfficeTravelModes = () => {
   const setPublicTransportRoute = () => {
     const ymaps = window.ymaps;
 
-    let multiRoute = new ymaps.multiRouter.MultiRoute({
-      referencePoints: [
-        [currentLocation.lat, currentLocation.lng],
-        branchLocation
-      ],
-      params: {
-        routingMode: 'masstransit'
+    let multiRoute = new ymaps.multiRouter.MultiRoute(
+      {
+        referencePoints: [
+          [currentLocation.lat, currentLocation.lng],
+          branchLocation,
+        ],
+        params: {
+          routingMode: 'masstransit',
+        },
+      },
+      {
+        boundsAutoApply: true,
       }
-    }, {
-      boundsAutoApply: true
-    });
-
-
+    );
 
     let changeLayoutButton = new ymaps.control.Button({
-      data: { content: "Изменить макет подписи для пеших сегментов"},
-      options: { selectOnClick: true }
+      data: { content: 'Изменить макет подписи для пеших сегментов' },
+      options: { selectOnClick: true },
     });
 
     changeLayoutButton.events.add('select', function () {
       //@ts-ignore
       multiRoute.options.set(
-        "routeWalkMarkerIconContentLayout",
-        ymaps.templateLayoutFactory.createClass('{{ properties.duration.text }}')
+        'routeWalkMarkerIconContentLayout',
+        ymaps.templateLayoutFactory.createClass(
+          '{{ properties.duration.text }}'
+        )
       );
     });
 
     changeLayoutButton.events.add('deselect', function () {
       //@ts-ignore
-      multiRoute.options.unset("routeWalkMarkerIconContentLayout");
+      multiRoute.options.unset('routeWalkMarkerIconContentLayout');
     });
 
     clearMap();
@@ -167,21 +170,21 @@ export const OfficeTravelModes = () => {
   const setWalkingRoute = () => {
     const ymaps = window.ymaps;
     const currentPoint = [currentLocation.lat, currentLocation.lng];
-    let multiRoute = new ymaps.multiRouter.MultiRoute({
-      referencePoints: [
-        currentPoint,
-        branchLocation
-      ],
-      params: {
-        routingMode: 'pedestrian'
+    let multiRoute = new ymaps.multiRouter.MultiRoute(
+      {
+        referencePoints: [currentPoint, branchLocation],
+        params: {
+          routingMode: 'pedestrian',
+        },
+      },
+      {
+        boundsAutoApply: true,
       }
-    }, {
-      boundsAutoApply: true
-    });
+    );
 
     let changePointsButton = new ymaps.control.Button({
-      data: {content: "Поменять местами точки А и В"},
-      options: {selectOnClick: true}
+      data: { content: 'Поменять местами точки А и В' },
+      options: { selectOnClick: true },
     });
 
     changePointsButton.events.add('select', function () {
@@ -201,27 +204,26 @@ export const OfficeTravelModes = () => {
 
     map.geoObjects.add(multiRoute);
   };
-
 
   const setBicycleRoute = () => {
     const ymaps = window.ymaps;
     const currentPoint = [currentLocation.lat, currentLocation.lng];
-    let multiRoute = new ymaps.multiRouter.MultiRoute({
-      referencePoints: [
-        currentPoint,
-        branchLocation
-      ],
-      params: {
-        //@ts-ignore
-        routingMode: 'bicycle'
+    let multiRoute = new ymaps.multiRouter.MultiRoute(
+      {
+        referencePoints: [currentPoint, branchLocation],
+        params: {
+          //@ts-ignore
+          routingMode: 'bicycle',
+        },
+      },
+      {
+        boundsAutoApply: true,
       }
-    }, {
-      boundsAutoApply: true
-    });
+    );
 
     let changePointsButton = new ymaps.control.Button({
-      data: {content: "Поменять местами точки А и В"},
-      options: {selectOnClick: true}
+      data: { content: 'Поменять местами точки А и В' },
+      options: { selectOnClick: true },
     });
 
     changePointsButton.events.add('select', function () {
@@ -241,7 +243,6 @@ export const OfficeTravelModes = () => {
 
     map.geoObjects.add(multiRoute);
   };
-
 
   const setTaxiRoute = () => {
     const ymaps = window.ymaps;
@@ -254,20 +255,19 @@ export const OfficeTravelModes = () => {
 
     let routePanelControl = new ymaps.control.RoutePanel({
       options: {
-
         showHeader: true,
         title: 'Вызов такси',
         //@ts-ignore
         routePanelTypes: { taxi: true },
-        maxWidth: '210px'
-      }
+        maxWidth: '210px',
+      },
     });
 
     //@ts-ignore
     routePanelControl.routePanel.state.set({
-      type: "taxi",
+      type: 'taxi',
       to: branchLocation,
-      toEnabled: false
+      toEnabled: false,
     });
 
     let zoomControl = new ymaps.control.ZoomControl({
@@ -277,9 +277,9 @@ export const OfficeTravelModes = () => {
         float: 'none',
         position: {
           bottom: 145,
-          right: 10
-        }
-      }
+          right: 10,
+        },
+      },
     });
 
     map.controls.add(routePanelControl).add(zoomControl);
@@ -298,35 +298,44 @@ export const OfficeTravelModes = () => {
     ymaps.layer.storage.add(DARK_MAP, function DarkLayer() {
       //@ts-ignore
       return new window.ymaps.Layer(
-        'https://core-renderer-tiles.maps.yandex.net/tiles?l=map&theme=dark&%c&%l&scale={{ scale }}',
+        'https://core-renderer-tiles.maps.yandex.net/tiles?l=map&theme=dark&%c&%l&scale={{ scale }}'
       );
     });
     //@ts-ignore
-    ymaps.mapType.storage.add(DARK_MAP, new ymaps.MapType('Dark Map', [DARK_MAP]));
+    ymaps.mapType.storage.add(
+      DARK_MAP,
+      new ymaps.MapType('Dark Map', [DARK_MAP])
+    );
 
     map = setMap({
-      loc: branchLocation
+      loc: branchLocation,
     });
     const objectManager = getManager();
 
     setPins(objectManager, getJSONFromOfficies(officesData));
 
     // локация юсера
-    let geolocation = ymaps.geolocation
-    geolocation.get({
-      provider: 'browser',
-      mapStateAutoApply: false,
-    }).then(function (result) {
-      //@ts-ignore
-      result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
-      map.geoObjects.add(result.geoObjects);
-      //@ts-ignore
-      myMap.setCenter(branchLocation || [currentLocation.lat, currentLocation.lng], 10, {duration: 300});
-    });
+    let geolocation = ymaps.geolocation;
+    geolocation
+      .get({
+        provider: 'browser',
+        mapStateAutoApply: false,
+      })
+      .then(function (result) {
+        //@ts-ignore
+        result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+        map.geoObjects.add(result.geoObjects);
+        //@ts-ignore
+        myMap.setCenter(
+          branchLocation || [currentLocation.lat, currentLocation.lng],
+          10,
+          { duration: 300 }
+        );
+      });
 
     map.geoObjects.add(objectManager);
 
-    map.geoObjects.events.add('click', function(e: any) {
+    map.geoObjects.events.add('click', function (e: any) {
       let objectId = e.get('objectId');
 
       if (Number(objectId) <= 0) {
@@ -345,7 +354,7 @@ export const OfficeTravelModes = () => {
 
       if (currentOffice) {
         dispatch(setDrawerOpen(DRAWER_TYPES.OFFICE));
-        dispatch(setCurrentOffice(currentOffice))
+        dispatch(setCurrentOffice(currentOffice));
       }
     });
   };
@@ -354,7 +363,7 @@ export const OfficeTravelModes = () => {
     evt.preventDefault();
     dispatch(setDrawerClose());
 
-    switch(transport) {
+    switch (transport) {
       case 'car': {
         setCarMapRoute();
         break;
@@ -397,8 +406,7 @@ export const OfficeTravelModes = () => {
                 value={Transport.Public}
                 checked={isChecked(Transport.Public)}
                 onChange={() => setTransport(Transport.Public)}
-              >
-              </input>
+              ></input>
               <span className='mode-toggle-icon'>
                 <IconYaBus />
               </span>
@@ -412,8 +420,7 @@ export const OfficeTravelModes = () => {
                 value={Transport.Car}
                 checked={isChecked(Transport.Car)}
                 onChange={() => setTransport(Transport.Car)}
-              >
-              </input>
+              ></input>
               <span className='mode-toggle-icon'>
                 <IconYaCar />
               </span>
@@ -427,8 +434,7 @@ export const OfficeTravelModes = () => {
                 value={Transport.Walking}
                 checked={isChecked(Transport.Walking)}
                 onChange={() => setTransport(Transport.Walking)}
-              >
-              </input>
+              ></input>
               <span className='mode-toggle-icon'>
                 <IconYaWalk />
               </span>
@@ -442,8 +448,7 @@ export const OfficeTravelModes = () => {
                 value={Transport.Bicycle}
                 checked={isChecked(Transport.Bicycle)}
                 onChange={() => setTransport(Transport.Bicycle)}
-              >
-              </input>
+              ></input>
               <span className='mode-toggle-icon'>
                 <IconYaMoto />
               </span>
@@ -457,15 +462,18 @@ export const OfficeTravelModes = () => {
                 value={Transport.Taxi}
                 checked={isChecked(Transport.Taxi)}
                 onChange={() => setTransport(Transport.Taxi)}
-              >
-              </input>
+              ></input>
               <span className='mode-toggle-icon'>
                 <IconYaTaxi />
               </span>
             </label>
           </div>
         </div>
-        <button type='submit' className='office-details-btn' disabled={!transport}>
+        <button
+          type='submit'
+          className='office-details-btn'
+          disabled={!transport}
+        >
           <IconClue />
           сюда
         </button>

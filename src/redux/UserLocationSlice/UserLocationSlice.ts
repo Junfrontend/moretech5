@@ -1,5 +1,7 @@
+import { OfficeType, PointEnum } from "../../types/office";
 import { DATA_DISPLAY_TYPE, DRAWER_TYPES } from "./../../types/index";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 
 function compareByDistance(a: any, b: any) {
   const distanceA = a.distance;
@@ -14,156 +16,31 @@ function compareByDistance(a: any, b: any) {
   }
 }
 
-const initialState: any = {
+type OfficeSliceType = {
+  userLocationWatchId: null,
+  lat: null | number,
+  lng: null | number,
+  isDrawerOpen: boolean
+  drawerType: string | boolean,
+  dataDisplayType: string | boolean,
+  officesList: OfficeType[] | null;
+  isLoading: boolean,
+  pointType: PointEnum
+  currentOffice: any,
+}
+
+const initialState: OfficeSliceType = {
   userLocationWatchId: null,
   lat: null,
   lng: null,
-  currentOffice: null,
-  officesList: [
-    {
-      id: 1,
-      salePointName: "ДО «На Баранова» Филиала № 7701 Банка ВТБ (ПАО)",
-      address:
-        "141500, Московская область, г. Солнечногорск, ул. Баранова, д. 1, 1-й этаж",
-      status: "открытая",
-      openHours: [
-        {
-          days: "пн",
-          hours: "10:00-20:00",
-        },
-        {
-          days: "вт",
-          hours: "10:00-20:00",
-        },
-        {
-          days: "ср",
-          hours: "10:00-20:00",
-        },
-        {
-          days: "чт",
-          hours: "10:00-20:00",
-        },
-        {
-          days: "пт",
-          hours: "10:00-20:00",
-        },
-        {
-          days: "сб",
-          hours: "10:00-19:00",
-        },
-        {
-          days: "вс",
-          hours: "10:00-20:00",
-        },
-      ],
-      rko: "нет РКО",
-      openHoursIndividual: [
-        {
-          days: "пн-пт",
-          hours: "09:00-20:00",
-        },
-        {
-          days: "сб",
-          hours: "10:00-17:00",
-        },
-        {
-          days: "в",
-          hours: "выходной",
-        },
-      ],
-      officeType: "Да",
-      salePointFormat: "Стандарт",
-      suoAvailability: null,
-      hasRamp: null,
-      latitude: 56.183239,
-      longitude: 36.9757,
-      metroStation: null,
-      distance: 62343,
-      kep: null,
-      myBranch: false,
-      cardsService: true,
-      carCreditService: true,
-      creditService: false,
-      mortgageService: false,
-      depositsService: false,
-      workload: {
-        cardsService: [
-          {
-            day: 0,
-            count: 14,
-          },
-          {
-            day: 1,
-            count: 7,
-          },
-          {
-            day: 2,
-            count: 12,
-          },
-          {
-            day: 3,
-            count: 18,
-          },
-          {
-            day: 4,
-            count: 14,
-          },
-          {
-            day: 5,
-            count: 12,
-          },
-          {
-            day: 6,
-            count: 10,
-          },
-        ],
-        carCreditService: [
-          {
-            day: 0,
-            count: 21,
-          },
-          {
-            day: 1,
-            count: 16,
-          },
-          {
-            day: 2,
-            count: 16,
-          },
-          {
-            day: 3,
-            count: 17,
-          },
-          {
-            day: 4,
-            count: 15,
-          },
-          {
-            day: 5,
-            count: 22,
-          },
-          {
-            day: 6,
-            count: 17,
-          },
-        ],
-      },
-      queueLoad: {
-        cardsService: {
-          count: 4,
-          time: 40,
-        },
-        carCreditService: {
-          count: 2,
-          time: 26,
-        },
-      },
-    },
-  ],
   isDrawerOpen: false,
+  currentOffice: null,
   drawerType: DRAWER_TYPES.DEFAULT,
   dataDisplayType: DATA_DISPLAY_TYPE.MAP,
-};
+  officesList: null,
+  isLoading: false,
+  pointType: PointEnum.OFFICE
+}
 
 const UserLocationSlice = createSlice({
   name: "UserLocationSlice",
@@ -203,6 +80,18 @@ const UserLocationSlice = createSlice({
     setCurrentOffice: (state, action) => {
       state.currentOffice = action.payload;
     },
+
+    setOffices: (state, action) => {
+      state.officesList = action.payload;
+    },
+
+    setOfficesLoadingStatus: (state, action) => {
+      state.isLoading = action.payload;
+    },
+
+    setPointType: (state, action) => {
+      state.pointType = action.payload;
+    },
   },
 });
 
@@ -214,5 +103,8 @@ export const {
   setUserLocationWatchId,
   setDrawerClose,
   setDrawerOpen,
+  setOffices,
+  setOfficesLoadingStatus,
+  setPointType,
   setCurrentOffice,
 } = UserLocationSlice.actions;
