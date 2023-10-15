@@ -1,4 +1,4 @@
-import { OfficeType } from "../../types/office";
+import { OfficeType, PointEnum } from "../../types/office";
 import { DATA_DISPLAY_TYPE, DRAWER_TYPES } from "./../../types/index";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -25,6 +25,7 @@ type OfficeSliceType = {
   dataDisplayType: string | boolean,
   officesList: OfficeType[] | null;
   isLoading: boolean,
+  pointType: PointEnum
 }
 
 const initialState: OfficeSliceType = {
@@ -36,6 +37,7 @@ const initialState: OfficeSliceType = {
   dataDisplayType: DATA_DISPLAY_TYPE.MAP,
   officesList: null,
   isLoading: false,
+  pointType: PointEnum.OFFICE
 }
 
 const UserLocationSlice = createSlice({
@@ -79,6 +81,10 @@ const UserLocationSlice = createSlice({
     setOfficesLoadingStatus: (state, action) => {
       state.isLoading = action.payload;
     },
+
+    setPointType: (state, action) => {
+      state.pointType = action.payload;
+    },
   },
 });
 
@@ -91,5 +97,6 @@ export const {
   setDrawerClose,
   setDrawerOpen,
   setOffices,
-  setOfficesLoadingStatus
+  setOfficesLoadingStatus,
+  setPointType
 } = UserLocationSlice.actions;

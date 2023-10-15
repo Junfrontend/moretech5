@@ -16,13 +16,16 @@ import {
 import Popover from '@mui/material/Popover';
 import CloseIcon from '@mui/icons-material/Close';
 import {
+  setOffices,
+  setPointType,
   setUserLocation,
   setUserLocationWatchId,
 } from '../../redux/UserLocationSlice/UserLocationSlice';
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { useEffect, useState } from 'react';
 import { fetchOfficesAction } from '../../redux/UserLocationSlice/asyncActions';
 import { PointEnum } from '../../types/office';
+import { getPointType } from '../../redux/UserLocationSlice/selectors';
 
 export enum ServiceEnum {
   CARD_SERVICE = 'cardsService',
@@ -36,12 +39,17 @@ const NavBar = () => {
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [serviceType, setServiceType] = useState<ServiceEnum | null>(null);
-  const [pointType, setPointType] = useState<PointEnum>(PointEnum.OFFICE);
   const [hasRamp, setHasRamp] = useState<boolean>(false);
   const [isFirstRender, setIsFirstRender] = useState(true);
+  const pointType = useAppSelector(getPointType);
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleChangePointType = (value: PointEnum) => {
+    dispatch(setOffices(null));
+    dispatch(setPointType(value));
   };
 
   const handleClose = () => {
@@ -145,7 +153,7 @@ const NavBar = () => {
                   value={pointType}
                   name='point-type-filter-radio-buttons'
                   onChange={(evt) =>
-                    setPointType(evt.target.value as PointEnum)
+                    handleChangePointType(evt.target.value as PointEnum)
                   }
                 >
                   <FormControlLabel
