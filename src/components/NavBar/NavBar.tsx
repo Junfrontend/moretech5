@@ -144,14 +144,6 @@ const NavBar = ({ setMapCenter }: any) => {
               }}
             />
           </IconButton>
-          <button
-            onClick={handleSearchIconClick}
-            type='button'
-            aria-label='search'
-            className='search-btn'
-          >
-            <IconsSearch />
-          </button>
           <Popover
             id={id}
             open={open}
@@ -260,7 +252,12 @@ const NavBar = ({ setMapCenter }: any) => {
               )}
             </Box>
           </Popover>
-          <button type='button' aria-label='search' className='search-btn'>
+          <button
+            onClick={handleSearchIconClick}
+            type='button'
+            aria-label='search'
+            className='search-btn'
+          >
             <IconsSearch />
           </button>
           <IconButton onClick={handleLocationClick}>
