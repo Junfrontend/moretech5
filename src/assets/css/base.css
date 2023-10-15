@@ -6,6 +6,8 @@
     --vt-c-black: #181818;
     --vt-c-black-soft: #222222;
     --vt-c-black-mute: #282828;
+
+    --color-grey: #D9D9D9;
   
     --vt-c-indigo: #2c3e50;
   
@@ -35,7 +37,7 @@
     --section-gap: 160px;
   }
   
-  @media (prefers-color-scheme: dark) {
+   /* @media (prefers-color-scheme: dark) {
     :root {
       --color-background: var(--vt-c-black);
       --color-background-soft: var(--vt-c-black-soft);
@@ -47,7 +49,7 @@
       --color-heading: var(--vt-c-text-dark-1);
       --color-text: var(--vt-c-text-dark-2);
     }
-  }
+  } */
   
   *,
   *::before,
