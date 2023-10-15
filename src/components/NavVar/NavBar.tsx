@@ -6,33 +6,23 @@ import ExploreIcon from "@mui/icons-material/Explore";
 import { Stack } from "@mui/material";
 import { IconsSearch } from "../Icons/IconsSearch";
 import {
-  setUserLocation,
-  setUserLocationWatchId,
+  setDrawerOpen,
 } from "../../redux/UserLocationSlice/UserLocationSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import './navbar.css';
+import {DRAWER_TYPES} from '../../types';
 
-const NavBar = () => {
+const NavBar = ({ setMapCenter }: any) => {
   const dispatch = useAppDispatch();
 
-  const handleUserGeoReceive = (position: any) => {
-    dispatch(
-      setUserLocation({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      })
-    );
+  const handleFilterOpen = () => {
+    dispatch(setDrawerOpen(DRAWER_TYPES.FILTER))
   };
 
-  const handleUserGeoRequest = () => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(handleUserGeoReceive);
-
-      const userLocationWatchId =
-        navigator.geolocation.watchPosition(handleUserGeoReceive);
-      dispatch(setUserLocationWatchId(userLocationWatchId));
-    } else {
-      alert("Гео недоступно");
+  const handleLocationClick = () => {
+    const map = document.querySelector('#map');
+    if (map) {
+      setMapCenter();
     }
   };
 
@@ -49,7 +39,7 @@ const NavBar = () => {
           width={"100%"}
           height={"80px"}
         >
-          <IconButton>
+          <IconButton onClick={handleFilterOpen}>
             <TuneIcon
               sx={{
                 color: "var(--color-text)",
@@ -60,7 +50,7 @@ const NavBar = () => {
           >
             <IconsSearch />
           </button>
-          <IconButton onClick={handleUserGeoRequest}>
+          <IconButton onClick={handleLocationClick}>
             <ExploreIcon
               sx={{
                 color: "var(--color-text)",

@@ -9,9 +9,12 @@ import { OfficeOpenHours } from './OfficeOpenHours/OfficeOpenHours';
 import IconClue from '../Icons/IconClue';
 import { OfficeTravelModes } from './OfficeOpenHours/OfficeTravelModes/OfficeTravelModes';
 import OfficeTabs from './OfficeTabs/OfficeTabs';
+import {useAppSelector} from '../../redux/hooks';
+import {getCurrentOffice} from '../../redux/UserLocationSlice/selectors';
 
 export const OfficeDetails = () => {
-  const { salePointName, address, openHours } = officesData[0];
+  const currentOffice = useAppSelector(getCurrentOffice);
+  const { salePointName, address, openHours } = currentOffice;
 
   return (
     <div className='office-details'>
@@ -64,11 +67,6 @@ export const OfficeDetails = () => {
 
       <footer>
         <OfficeTravelModes />
-
-        <button type='button' className='office-details-btn'>
-          <IconClue />
-          сюда
-        </button>
       </footer>
     </div>
   );

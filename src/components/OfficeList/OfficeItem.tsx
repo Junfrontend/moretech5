@@ -1,6 +1,11 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, Chip } from '@mui/material';
 import LocationMark from '../LocationMark/LocationMark';
 import './office-item.css';
+import {getRandomInt} from '../../utils';
+import {
+  busyClassNames,
+  busyLabels,
+} from '../../consts';
 
 function calculateWorkloadPercentage(workload: any) {
 
@@ -16,6 +21,7 @@ function calculateWorkloadPercentage(workload: any) {
   return result;
 }
 
+// todo должен ли быть переход на детальную страницу?
 const OfficeItem = (props: any) => {
   const { salePointName, distance, address, metroStation, workload } =
     props.data;
@@ -25,6 +31,16 @@ const OfficeItem = (props: any) => {
   for (const service of Object.values(workload)) {
     console.log(calculateWorkloadPercentage(service));
   }
+
+  const getBusyBranchInfo = () => {
+    const busyLevel = getRandomInt(3);
+    return {
+      label: busyLabels[busyLevel],
+      className: busyClassNames[busyLevel],
+    };
+  };
+
+  const busyBranchInfo = getBusyBranchInfo();
 
   return (
     <Stack
@@ -46,6 +62,12 @@ const OfficeItem = (props: any) => {
       <p className='office-item-name'>{salePointName}</p>
       <Stack direction={'row'} py={'10px'}>
         {/* Загрузка */}
+      </Stack>
+      <Stack direction={"row"} py={"10px"} alignItems={'center'} className={'branch-busy-info'}>
+        <p className='office-item-busy'>
+         Загруженность:
+        </p>
+        <Chip label={busyBranchInfo.label} className={`busy-level-${busyBranchInfo.className}`} />
       </Stack>
     </Stack>
   );

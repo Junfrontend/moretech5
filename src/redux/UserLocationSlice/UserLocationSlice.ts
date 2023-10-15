@@ -18,6 +18,7 @@ const initialState: any = {
   userLocationWatchId: null,
   lat: null,
   lng: null,
+  currentOffice: null,
   officesList: [
     {
       id: 1,
@@ -169,8 +170,6 @@ const UserLocationSlice = createSlice({
   initialState,
   reducers: {
     setUserLocation: (state, action: PayloadAction<any>) => {
-      console.log(action.payload, "action payload");
-
       state.lat = action.payload.lat;
       state.lng = action.payload.lng;
     },
@@ -192,10 +191,17 @@ const UserLocationSlice = createSlice({
     setDrawerClose: (state) => {
       state.drawerType = false;
       state.isDrawerOpen = false;
+      state.currentOffice = null;
     },
 
     setDataDisplayType: (state, action) => {
-      state.dataDisplayType = action.payload;
+      if (action.payload) {
+        state.dataDisplayType = action.payload;
+      }
+    },
+
+    setCurrentOffice: (state, action) => {
+      state.currentOffice = action.payload;
     },
   },
 });
@@ -208,4 +214,5 @@ export const {
   setUserLocationWatchId,
   setDrawerClose,
   setDrawerOpen,
+  setCurrentOffice,
 } = UserLocationSlice.actions;
