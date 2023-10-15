@@ -18,6 +18,7 @@ import {
 } from "../../redux/UserLocationSlice/UserLocationSlice";
 import { useDispatch } from "react-redux";
 import { DRAWER_TYPES } from "../../types";
+import Search from "../Search/Search";
 
 export default function BaseDrawer({ children }: any) {
   //   Стейт берем из глобального стора +
@@ -42,6 +43,7 @@ export default function BaseDrawer({ children }: any) {
     };
 
   const content = () => {
+    
     switch (drawerType) {
       case DRAWER_TYPES.FILTER:
         // Компонент для начинки Drawer`а
@@ -49,8 +51,12 @@ export default function BaseDrawer({ children }: any) {
       case DRAWER_TYPES.OFFICE:
         // Компонент для начинки Drawer`а
         return <span>OFFICE</span>;
+      case DRAWER_TYPES.SEARCH:        
+        return <Search />
     }
   };
+
+  console.log(DRAWER_TYPES.SEARCH, Search);
 
   return (
     <SwipeableDrawer

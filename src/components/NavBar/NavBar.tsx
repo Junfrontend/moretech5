@@ -7,10 +7,13 @@ import ExploreIcon from "@mui/icons-material/Explore";
 import { Stack } from "@mui/material";
 
 import {
+  setDataDisplayType,
+  setDrawerOpen,
   setUserLocation,
   setUserLocationWatchId,
 } from "../../redux/UserLocationSlice/UserLocationSlice";
 import { useAppDispatch } from "../../redux/hooks";
+import { DATA_DISPLAY_TYPE, DRAWER_TYPES } from "../../types";
 
 const NavBar = () => {
   const dispatch = useAppDispatch();
@@ -23,6 +26,12 @@ const NavBar = () => {
       })
     );
   };
+
+  const handleSearchIconClick = () => {
+    dispatch(
+      setDrawerOpen(DRAWER_TYPES.SEARCH)
+    )
+  }
 
   const handleUserGeoRequest = () => {
     if ("geolocation" in navigator) {
@@ -56,6 +65,7 @@ const NavBar = () => {
             />
           </IconButton>
           <IconButton
+          onClick={handleSearchIconClick}
             sx={{
               backgroundColor: "#165BC6",
               borderRadius: "12px",
