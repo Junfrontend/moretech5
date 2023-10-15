@@ -18,6 +18,7 @@ import {
 } from "../../redux/UserLocationSlice/UserLocationSlice";
 import { useDispatch } from "react-redux";
 import { DRAWER_TYPES } from "../../types";
+import Search from "../Search/Search";
 import FilterDrawer from '../FilterDrawer/FilterDrawer';
 import DetailsDrawer from '../DetailsDrawer/DetailsDrawer';
 
@@ -44,15 +45,20 @@ export default function BaseDrawer({ children }: any) {
     };
 
   const content = () => {
+    
     switch (drawerType) {
       case DRAWER_TYPES.FILTER:
         // Компонент для начинки Drawer`а
         return <FilterDrawer />;
       case DRAWER_TYPES.OFFICE:
         // Компонент для начинки Drawer`а
-        return <DetailsDrawer />;
+        return <DetailsDrawer />;;
+      case DRAWER_TYPES.SEARCH:        
+        return <Search />
     }
   };
+
+  console.log(DRAWER_TYPES.SEARCH, Search);
 
   return (
     <SwipeableDrawer
@@ -60,6 +66,10 @@ export default function BaseDrawer({ children }: any) {
       open={isDrawerOpen}
       onClose={toggleDrawer(false)}
       onOpen={toggleDrawer(true)}
+      sx={{
+        borderTopLeftRadius: "12px",
+        borderTopRightRadius: "12px",
+      }}
     >
       {content()}
     </SwipeableDrawer>

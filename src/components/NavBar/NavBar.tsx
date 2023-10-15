@@ -17,6 +17,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import {
   setOffices,
   setPointType,
+  setUserLocation,
+  setUserLocationWatchId,
 } from '../../redux/UserLocationSlice/UserLocationSlice';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { useEffect, useState } from 'react';
@@ -63,6 +65,31 @@ const NavBar = ({ setMapCenter }: any) => {
   const handleFilterOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
     dispatch(setDrawerOpen(DRAWER_TYPES.FILTER));
+  };
+
+  const handleSearchIconClick = () => {
+    dispatch(setDrawerOpen(DRAWER_TYPES.SEARCH));
+  };
+
+  const handleUserGeoReceive = (position: any) => {
+    dispatch(
+      setUserLocation({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      })
+    );
+  };
+
+  const handleUserGeoRequest = () => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(handleUserGeoReceive);
+
+      const userLocationWatchId =
+        navigator.geolocation.watchPosition(handleUserGeoReceive);
+      dispatch(setUserLocationWatchId(userLocationWatchId));
+    } else {
+      alert('Гео недоступно');
+    }
   };
 
   const handleLocationClick = () => {
@@ -117,6 +144,14 @@ const NavBar = ({ setMapCenter }: any) => {
               }}
             />
           </IconButton>
+          <button
+            onClick={handleSearchIconClick}
+            type='button'
+            aria-label='search'
+            className='search-btn'
+          >
+            <IconsSearch />
+          </button>
           <Popover
             id={id}
             open={open}
