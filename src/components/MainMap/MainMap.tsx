@@ -15,7 +15,7 @@ import { Box, Stack, useMediaQuery } from "@mui/material";
 import HeaderVisabilityType from "../HeaderVisabilityType/HeaderVisabilityType";
 import {DATA_DISPLAY_TYPE, DRAWER_TYPES} from "../../types";
 import OfficeList from "../OfficeList/OfficeList";
-import NavBar from "../NavVar/NavBar";
+import NavBar from "../NavBar/NavBar";
 import { AppLogo } from "../AppLogo/AppLogo";
 
 import {useDispatch} from 'react-redux';

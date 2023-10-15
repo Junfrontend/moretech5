@@ -22,3 +22,6 @@ export const getDataDisplayType = (state: RootState) =>
 
 export const getCurrentOffice = (state: RootState) =>
   state.UserLocationSlice.currentOffice;
+
+  export const getMessageList = (state: RootState) =>
+  state.UserLocationSlice.messageList;

@@ -19,6 +19,7 @@ const initialState: any = {
   lat: null,
   lng: null,
   currentOffice: null,
+  messageList: [],
   officesList: [
     {
       id: 1,
@@ -179,6 +180,12 @@ const UserLocationSlice = createSlice({
       state.lng = null;
     },
 
+    setMessageList: (state, action) => {
+      console.log('set mess', action.payload);
+      
+      state.messageList = state.messageList.concat([action.payload])
+    },
+
     setUserLocationWatchId: (state, action) => {
       state.userLocationWatchId = action.payload;
     },
@@ -214,5 +221,6 @@ export const {
   setUserLocationWatchId,
   setDrawerClose,
   setDrawerOpen,
+  setMessageList,
   setCurrentOffice,
 } = UserLocationSlice.actions;

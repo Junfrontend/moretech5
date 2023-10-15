@@ -66,6 +66,10 @@ export default function BaseDrawer({ children }: any) {
       open={isDrawerOpen}
       onClose={toggleDrawer(false)}
       onOpen={toggleDrawer(true)}
+      sx={{
+        borderTopLeftRadius: "12px",
+        borderTopRightRadius: "12px",
+      }}
     >
       {content()}
     </SwipeableDrawer>

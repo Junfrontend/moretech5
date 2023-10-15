@@ -13,19 +13,27 @@ import {
 } from "../../redux/UserLocationSlice/UserLocationSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import { DATA_DISPLAY_TYPE, DRAWER_TYPES } from "../../types";
+import './navbar.css'
 
 const NavBar = ({ setMapCenter }: any) => {
   const dispatch = useAppDispatch();
 
   const handleFilterOpen = () => {
-    dispatch(setDrawerOpen(DRAWER_TYPES.FILTER))
+    dispatch(setDrawerOpen(DRAWER_TYPES.FILTER));
   };
 
   const handleSearchIconClick = () => {
+    dispatch(setDrawerOpen(DRAWER_TYPES.SEARCH));
+  };
+
+  const handleUserGeoReceive = (position: any) => {
     dispatch(
-      setDrawerOpen(DRAWER_TYPES.SEARCH)
-    )
-  }
+      setUserLocation({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      })
+    );
+  };
 
   const handleUserGeoRequest = () => {
     if ("geolocation" in navigator) {
@@ -40,7 +48,7 @@ const NavBar = ({ setMapCenter }: any) => {
   };
 
   const handleLocationClick = () => {
-    const map = document.querySelector('#map');
+    const map = document.querySelector("#map");
     if (map) {
       setMapCenter();
     }
@@ -49,7 +57,11 @@ const NavBar = ({ setMapCenter }: any) => {
   return (
     <AppBar
       position="fixed"
-      sx={{ top: "auto", bottom: 0, backgroundColor: "var(--color-background)" }}
+      sx={{
+        top: "auto",
+        bottom: 0,
+        backgroundColor: "var(--color-background)",
+      }}
     >
       <Toolbar>
         <Stack
@@ -66,7 +78,11 @@ const NavBar = ({ setMapCenter }: any) => {
               }}
             />
           </IconButton>
-          <button onClick={handleSearchIconClick} type="button" aria-label='search' className="search-btn"
+          <button
+            onClick={handleSearchIconClick}
+            type="button"
+            aria-label="search"
+            className="search-btn"
           >
             <IconsSearch />
           </button>
