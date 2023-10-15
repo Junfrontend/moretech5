@@ -26,7 +26,6 @@ export const fetchOfficesAction = createAsyncThunk<
   dispatch(setOfficesLoadingStatus(true));
   getOffices(downLimitLatitude, upLimitLatitude, leftLimitLongitude, rightLimitLongitude, pointType, serviceType, hasRamp)
     .then((data) => {
-      console.log(data)
       dispatch(
         setOffices(data))
     })

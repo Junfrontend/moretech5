@@ -50,7 +50,6 @@ const MainMap = () => {
     const objectManager = getManager();
 
     if (officesData) {
-      console.log('set pins');
       setPins(objectManager, getJSONFromOfficies(officesData));
     }
 

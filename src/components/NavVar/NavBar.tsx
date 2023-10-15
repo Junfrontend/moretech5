@@ -20,7 +20,9 @@ import {
   setUserLocationWatchId,
 } from '../../redux/UserLocationSlice/UserLocationSlice';
 import { useAppDispatch } from '../../redux/hooks';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { fetchOfficesAction } from '../../redux/UserLocationSlice/asyncActions';
+import { PointEnum } from '../../types/office';
 
 export enum ServiceEnum {
   CARD_SERVICE = 'cardsService',
@@ -34,6 +36,9 @@ const NavBar = () => {
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [serviceType, setServiceType] = useState<ServiceEnum | null>(null);
+  const [pointType, setPointType] = useState<PointEnum>(PointEnum.OFFICE);
+  const [hasRamp, setHasRamp] = useState<boolean>(false);
+  const [isFirstRender, setIsFirstRender] = useState(true);
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -65,6 +70,27 @@ const NavBar = () => {
     } else {
       alert('Гео недоступно');
     }
+  };
+
+  useEffect(() => {
+    if (!isFirstRender) {
+      dispatch(
+        fetchOfficesAction({
+          downLimitLatitude: 50,
+          leftLimitLongitude: 40,
+          rightLimitLongitude: 30,
+          upLimitLatitude: 60,
+          pointType,
+          serviceType: serviceType ? serviceType : undefined,
+          hasRamp: hasRamp ? hasRamp : undefined,
+        })
+      );
+    }
+    setIsFirstRender(false);
+  }, [serviceType, pointType, hasRamp]);
+
+  const handleChangeHasRamp = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setHasRamp(event.target.checked);
   };
 
   return (
@@ -103,72 +129,95 @@ const NavBar = () => {
             >
               <CloseIcon />
             </IconButton>
-            <Box sx={{ padding: '20px', paddingTop: '35px' }}>
+            <Box sx={{ padding: '10px', paddingTop: '35px' }}>
               <Box
                 sx={{
-                  marginBottom: '30px',
                   display: 'flex',
                   flexDirection: 'column',
                 }}
               >
-                <Typography
-                  variant='h5'
-                  component='p'
-                  sx={{ marginBottom: '10px' }}
-                >
+                <Typography variant='h6' component='p'>
                   Показать только:
                 </Typography>
 
-                {/* <FormControlLabel
-                  control={
-                    <Checkbox
-                      value={category}
-                      checked={checkedCategories.includes(category)}
-                      onChange={handleChangeCheckboxCategory}
-                    />
-                  }
-                  label={category}
-                /> */}
-              </Box>
-              <Box>
-                <Typography variant='h6' component='p'>
-                  Услуга:
-                </Typography>
                 <RadioGroup
-                  aria-labelledby='price-sort-radio-buttons'
-                  value={serviceType}
-                  name='service-filter-radio-buttons'
+                  aria-labelledby='point-type-filter-radio-buttons'
+                  value={pointType}
+                  name='point-type-filter-radio-buttons'
                   onChange={(evt) =>
-                    setServiceType(evt.target.value as ServiceEnum)
+                    setPointType(evt.target.value as PointEnum)
                   }
                 >
                   <FormControlLabel
-                    value={ServiceEnum.CAR_CREDIT_SERVICE}
+                    value={PointEnum.OFFICE}
                     control={<Radio />}
-                    label='Автокредит'
+                    label='Офисы'
                   />
                   <FormControlLabel
-                    value={ServiceEnum.DEPOSIT_SERVICE}
+                    value={PointEnum.ATM}
                     control={<Radio />}
-                    label='Вклады и счета'
-                  />
-                  <FormControlLabel
-                    value={ServiceEnum.MORTGAGE_SERVICE}
-                    control={<Radio />}
-                    label='Ипотека'
-                  />
-                  <FormControlLabel
-                    value={ServiceEnum.CARD_SERVICE}
-                    control={<Radio />}
-                    label='Карты'
-                  />
-                  <FormControlLabel
-                    value={ServiceEnum.CREDIT_SERVICE}
-                    control={<Radio />}
-                    label='Кредиты'
+                    label='Банкоматы'
                   />
                 </RadioGroup>
               </Box>
+              {pointType === PointEnum.OFFICE && (
+                <Box>
+                  <Typography variant='h6' component='p'>
+                    Услуга:
+                  </Typography>
+                  <RadioGroup
+                    aria-labelledby='service-filter-radio-buttons'
+                    value={serviceType}
+                    name='service-filter-radio-buttons'
+                    onChange={(evt) =>
+                      setServiceType(evt.target.value as ServiceEnum)
+                    }
+                  >
+                    <FormControlLabel
+                      value={ServiceEnum.CAR_CREDIT_SERVICE}
+                      control={<Radio />}
+                      label='Автокредит'
+                    />
+                    <FormControlLabel
+                      value={ServiceEnum.DEPOSIT_SERVICE}
+                      control={<Radio />}
+                      label='Вклады и счета'
+                    />
+                    <FormControlLabel
+                      value={ServiceEnum.MORTGAGE_SERVICE}
+                      control={<Radio />}
+                      label='Ипотека'
+                    />
+                    <FormControlLabel
+                      value={ServiceEnum.CARD_SERVICE}
+                      control={<Radio />}
+                      label='Карты'
+                    />
+                    <FormControlLabel
+                      value={ServiceEnum.CREDIT_SERVICE}
+                      control={<Radio />}
+                      label='Кредиты'
+                    />
+                  </RadioGroup>
+                </Box>
+              )}
+              {pointType === PointEnum.OFFICE && (
+                <Box>
+                  <Typography variant='h6' component='p'>
+                    Дополнительно:
+                  </Typography>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        value={hasRamp}
+                        checked={hasRamp}
+                        onChange={handleChangeHasRamp}
+                      />
+                    }
+                    label='Пандус'
+                  />
+                </Box>
+              )}
             </Box>
           </Popover>
           <IconButton
