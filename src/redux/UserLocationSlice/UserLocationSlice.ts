@@ -26,6 +26,7 @@ type OfficeSliceType = {
   officesList: OfficeType[] | null;
   isLoading: boolean,
   pointType: PointEnum
+  currentOffice: any,
 }
 
 const initialState: OfficeSliceType = {
@@ -33,6 +34,7 @@ const initialState: OfficeSliceType = {
   lat: null,
   lng: null,
   isDrawerOpen: false,
+  currentOffice: null,
   drawerType: DRAWER_TYPES.DEFAULT,
   dataDisplayType: DATA_DISPLAY_TYPE.MAP,
   officesList: null,
@@ -45,8 +47,6 @@ const UserLocationSlice = createSlice({
   initialState,
   reducers: {
     setUserLocation: (state, action: PayloadAction<any>) => {
-      console.log(action.payload, "action payload");
-
       state.lat = action.payload.lat;
       state.lng = action.payload.lng;
     },
@@ -68,10 +68,17 @@ const UserLocationSlice = createSlice({
     setDrawerClose: (state) => {
       state.drawerType = false;
       state.isDrawerOpen = false;
+      state.currentOffice = null;
     },
 
     setDataDisplayType: (state, action) => {
-      state.dataDisplayType = action.payload;
+      if (action.payload) {
+        state.dataDisplayType = action.payload;
+      }
+    },
+
+    setCurrentOffice: (state, action) => {
+      state.currentOffice = action.payload;
     },
 
     setOffices: (state, action) => {
@@ -98,5 +105,6 @@ export const {
   setDrawerOpen,
   setOffices,
   setOfficesLoadingStatus,
-  setPointType
+  setPointType,
+  setCurrentOffice,
 } = UserLocationSlice.actions;

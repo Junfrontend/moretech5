@@ -7,10 +7,12 @@ import { PointEnum } from '../../types/office';
 import AtmItem from './AtmItem';
 import OfficeItem from './OfficeItem';
 import { Stack } from '@mui/material';
+import { officesData } from '../../mocks/offices';
 
 const OfficeList = () => {
   const pointType = useAppSelector(getPointType);
   const officeList = useAppSelector(getOfficeList);
+
   return (
     <Stack
       sx={{
@@ -19,10 +21,12 @@ const OfficeList = () => {
     >
       {pointType === PointEnum.OFFICE &&
         officeList &&
-        officeList?.map((el: any) => <OfficeItem data={el} />)}
+        officeList?.map((el: any, index) => (
+          <OfficeItem data={el} key={index} />
+        ))}
       {pointType === PointEnum.ATM &&
         officeList &&
-        officeList?.map((el: any) => <AtmItem data={el} />)}
+        officeList?.map((el: any, index) => <AtmItem data={el} key={index} />)}
     </Stack>
   );
 };

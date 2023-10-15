@@ -18,6 +18,8 @@ import {
 } from "../../redux/UserLocationSlice/UserLocationSlice";
 import { useDispatch } from "react-redux";
 import { DRAWER_TYPES } from "../../types";
+import FilterDrawer from '../FilterDrawer/FilterDrawer';
+import DetailsDrawer from '../DetailsDrawer/DetailsDrawer';
 
 export default function BaseDrawer({ children }: any) {
   //   Стейт берем из глобального стора +
@@ -45,10 +47,10 @@ export default function BaseDrawer({ children }: any) {
     switch (drawerType) {
       case DRAWER_TYPES.FILTER:
         // Компонент для начинки Drawer`а
-        return <span>ФИЛЬТРЫ</span>;
+        return <FilterDrawer />;
       case DRAWER_TYPES.OFFICE:
         // Компонент для начинки Drawer`а
-        return <span>OFFICE</span>;
+        return <DetailsDrawer />;
     }
   };
 

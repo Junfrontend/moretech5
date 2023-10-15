@@ -1,7 +1,6 @@
 import Toolbar from '@mui/material/Toolbar';
 import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
 import TuneIcon from '@mui/icons-material/Tune';
 import ExploreIcon from '@mui/icons-material/Explore';
 import {
@@ -18,14 +17,16 @@ import CloseIcon from '@mui/icons-material/Close';
 import {
   setOffices,
   setPointType,
-  setUserLocation,
-  setUserLocationWatchId,
 } from '../../redux/UserLocationSlice/UserLocationSlice';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { useEffect, useState } from 'react';
 import { fetchOfficesAction } from '../../redux/UserLocationSlice/asyncActions';
 import { PointEnum } from '../../types/office';
 import { getPointType } from '../../redux/UserLocationSlice/selectors';
+import { IconsSearch } from '../Icons/IconsSearch';
+import { setDrawerOpen } from '../../redux/UserLocationSlice/UserLocationSlice';
+import './navbar.css';
+import { DRAWER_TYPES } from '../../types';
 
 export enum ServiceEnum {
   CARD_SERVICE = 'cardsService',
@@ -35,7 +36,7 @@ export enum ServiceEnum {
   DEPOSIT_SERVICE = 'depositsService',
 }
 
-const NavBar = () => {
+const NavBar = ({ setMapCenter }: any) => {
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [serviceType, setServiceType] = useState<ServiceEnum | null>(null);
@@ -59,24 +60,15 @@ const NavBar = () => {
   const open = Boolean(anchorEl);
   const id = open ? 'link-filter' : undefined;
 
-  const handleUserGeoReceive = (position: any) => {
-    dispatch(
-      setUserLocation({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      })
-    );
+  const handleFilterOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+    dispatch(setDrawerOpen(DRAWER_TYPES.FILTER));
   };
 
-  const handleUserGeoRequest = () => {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(handleUserGeoReceive);
-
-      const userLocationWatchId =
-        navigator.geolocation.watchPosition(handleUserGeoReceive);
-      dispatch(setUserLocationWatchId(userLocationWatchId));
-    } else {
-      alert('Гео недоступно');
+  const handleLocationClick = () => {
+    const map = document.querySelector('#map');
+    if (map) {
+      setMapCenter();
     }
   };
 
@@ -104,7 +96,11 @@ const NavBar = () => {
   return (
     <AppBar
       position='fixed'
-      sx={{ top: 'auto', bottom: 0, backgroundColor: '#FFF' }}
+      sx={{
+        top: 'auto',
+        bottom: 0,
+        backgroundColor: 'var(--color-background)',
+      }}
     >
       <Toolbar>
         <Stack
@@ -112,11 +108,12 @@ const NavBar = () => {
           alignItems={'center'}
           direction={'row'}
           width={'100%'}
+          height={'80px'}
         >
           <IconButton onClick={handleOpen}>
             <TuneIcon
               sx={{
-                color: '#000',
+                color: 'var(--color-text)',
               }}
             />
           </IconButton>
@@ -228,25 +225,13 @@ const NavBar = () => {
               )}
             </Box>
           </Popover>
-          <IconButton
-            sx={{
-              backgroundColor: '#165BC6',
-              borderRadius: '12px',
-              position: 'relative',
-              bottom: '20px',
-              margin: '0 auto',
-            }}
-          >
-            <SearchIcon
-              sx={{
-                color: '#FFF',
-              }}
-            />
-          </IconButton>
-          <IconButton onClick={handleUserGeoRequest}>
+          <button type='button' aria-label='search' className='search-btn'>
+            <IconsSearch />
+          </button>
+          <IconButton onClick={handleLocationClick}>
             <ExploreIcon
               sx={{
-                color: '#000',
+                color: 'var(--color-text)',
               }}
             />
           </IconButton>

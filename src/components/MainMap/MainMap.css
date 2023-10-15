@@ -1,9 +1,23 @@
 .map {
-  height: 500px;
+  min-height: 500px;
+  height: 100vh!important;
+  min-width: 50vw!important;
+
+  & + div {
+    height: 100%;
+  }
 }
 
 body {
   margin: 0;
+}
+
+.app-desktop {
+  max-height: calc(100vh - 170px);
+  & > .MuiStack-root {
+    overflow: auto;
+    padding: 2rem;
+  }
 }
 
 .wrapper-icon-outer {
@@ -22,11 +36,10 @@ body {
   justify-content: center;
   align-items: center;
 
-  width: 20px;
-  padding: 5px;
+  width: 30px;
+  height: 30px;
 
   background-color: rgb(26, 30, 35);
-
   border: 2px solid rgb(71, 137, 235);
   border-radius: 50%;
 }

@@ -87,3 +87,7 @@
   background-color: var(--color-blue);
   border-radius: 0.8rem;
 }
+
+.office-details-btn:disabled {
+  opacity: 0.6;
+}

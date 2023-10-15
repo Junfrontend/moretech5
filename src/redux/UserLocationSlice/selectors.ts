@@ -22,3 +22,5 @@ export const getDataDisplayType = (state: RootState) =>
 
 export const getPointType = (state: RootState) =>
   state.UserLocationSlice.pointType;
+export const getCurrentOffice = (state: RootState) =>
+  state.UserLocationSlice.currentOffice;

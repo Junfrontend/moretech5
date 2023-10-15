@@ -20,14 +20,56 @@ import NavBar from '../NavVar/NavBar';
 import { setOffices } from '../../redux/UserLocationSlice/UserLocationSlice';
 import { fetchOfficesAction } from '../../redux/UserLocationSlice/asyncActions';
 import { PointEnum } from '../../types/office';
+import './MainMap.css';
+import { useMediaQuery } from '@mui/material';
+import { DRAWER_TYPES } from '../../types';
+import { useDispatch } from 'react-redux';
+import {
+  setCurrentOffice,
+  setDrawerOpen,
+} from '../../redux/UserLocationSlice/UserLocationSlice';
+import { AppLogo } from '../AppLogo/AppLogo';
+
+const Map = () => {
+  return <div id='map' className='map' />;
+};
 
 const MainMap = () => {
+  const isDesktop = useMediaQuery('(min-width:1024px)');
   const displayType = useAppSelector(getDataDisplayType);
   const dispatch = useAppDispatch();
 
   const { lat, lng } = useAppSelector(getCurrentUserLocation);
   const officesData = useAppSelector(getOfficeList);
-  const { getMap, getManager, setPins } = useMap([lat, lng]);
+
+  let map: any = null;
+
+  const { setMap, getManager, setPins } = useMap([lat, lng]);
+
+  const setLocation = (map: any) => {
+    //@ts-ignore
+    const ymaps = window.ymaps;
+    let geolocation = ymaps.geolocation;
+
+    geolocation
+      .get({
+        provider: 'browser',
+        mapStateAutoApply: false,
+      })
+      .then(function (result) {
+        //@ts-ignore
+        result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+        map.geoObjects.add(result.geoObjects);
+        //@ts-ignore
+        map.setCenter(result.geoObjects.get(0).geometry.getCoordinates(), 13, {
+          duration: 300,
+        });
+      });
+  };
+
+  const setNewMap = () => {
+    map = setMap({});
+  };
 
   function init() {
     const DARK_MAP = 'custom#dark';
@@ -46,30 +88,49 @@ const MainMap = () => {
       new ymaps.MapType('Dark Map', [DARK_MAP])
     );
 
-    const myMap = getMap();
+    setNewMap();
     const objectManager = getManager();
 
     if (officesData) {
       setPins(objectManager, getJSONFromOfficies(officesData));
     }
 
-    // objectManager.clusters.events.add(['mouseenter', 'mouseleave'], (e) => onClusterEvent(e, objectManager));
-
     // локация юсера
-    let geolocation = ymaps.geolocation;
-    geolocation
-      .get({
-        provider: 'browser',
-        mapStateAutoApply: true,
-      })
-      .then(function (result) {
-        //@ts-ignore
-        result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
-        myMap.geoObjects.add(result.geoObjects);
-      });
+    setLocation(map);
+    map.geoObjects.add(objectManager);
+    map.geoObjects.events.add('click', function (e: any) {
+      let objectId: string = e.get('objectId');
 
-    myMap.geoObjects.add(objectManager);
+      if (Number(objectId) <= 0) {
+        return;
+      }
+      let currentOffice: any = null;
+      // todo нужны ID!!!!
+
+      if (officesData) {
+        for (let i = 0; i < officesData.length; i++) {
+          //@ts-ignore
+          if (i + 1 === Number(objectId)) {
+            currentOffice = officesData[i];
+            break;
+          }
+        }
+      }
+
+      if (currentOffice) {
+        dispatch(setDrawerOpen(DRAWER_TYPES.OFFICE));
+        dispatch(setCurrentOffice(currentOffice));
+      }
+    });
   }
+
+  const setMapCenter = () => {
+    const map = document.querySelector('#map');
+    if (map?.innerHTML) {
+      map.innerHTML = '';
+    }
+    init();
+  };
 
   useEffect(() => {
     dispatch(
@@ -86,39 +147,28 @@ const MainMap = () => {
   useEffect(() => {
     //@ts-ignore
     if (window.ymaps && displayType === DATA_DISPLAY_TYPE.MAP && officesData) {
-      //@ts-ignore
-      const mapCotainer = document.querySelector('#map');
-      //@ts-ignore
-      mapCotainer.innerHTML = '';
       window.ymaps.ready(init);
     }
   }, [displayType, officesData]);
 
-  // useEffect(() => {
-  //   // const myMap = getMap();
-
-  //   // @ts-ignore
-  //   // const myGeoObject = new window.ymaps.GeoObject({
-  //   //   geometry: {
-  //   //     type: "Point", // тип геометрии - точка
-  //   //     // @ts-ignore
-  //   //     coordinates: [lat, lng], // координаты точки
-  //   //   },
-  //   // });
-
-  //   // window.ymaps.geoObjects.add(myGeoObject);
-  // }, [lat, lng]);
-
   return (
     <Stack direction={'column'}>
-      <Stack direction={'column'} height={'100wh'}>
-        <HeaderVisabilityType />
-        {displayType === DATA_DISPLAY_TYPE.MAP && (
-          <div id='map' className='map' />
+      <Stack
+        className={isDesktop ? 'app-desktop' : ''}
+        direction={isDesktop ? 'row' : 'column'}
+        height={'100wh'}
+      >
+        {!isDesktop && <HeaderVisabilityType />}
+        {isDesktop && (
+          <>
+            <AppLogo />
+            <OfficeList />
+          </>
         )}
+        {displayType === DATA_DISPLAY_TYPE.MAP && <Map />}
         {displayType === DATA_DISPLAY_TYPE.LIST && <OfficeList />}
       </Stack>
-      <NavBar />
+      <NavBar setMapCenter={setMapCenter} />
     </Stack>
   );
 };
