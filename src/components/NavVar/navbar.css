@@ -1,0 +1,20 @@
+.search-btn {
+    --size: 4.7rem;
+
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 30px;
+    background-color: #165BC6;
+    transform: translate(-50%, -50%);
+
+    border: 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+.search-btn svg {
+    width: 2rem;
+}

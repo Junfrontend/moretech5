@@ -11,13 +11,20 @@ import { getJSONFromOfficies } from "../../utils";
 import { officesData } from "../../mocks/offices";
 
 import "./MainMap.css";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, useMediaQuery } from "@mui/material";
 import HeaderVisabilityType from "../HeaderVisabilityType/HeaderVisabilityType";
 import { DATA_DISPLAY_TYPE } from "../../types";
 import OfficeList from "../OfficeList/OfficeList";
 import NavBar from "../NavVar/NavBar";
+import { AppLogo } from "../AppLogo/AppLogo";
+
+const Map = () => {
+  return <div id="map" className="map" />
+}
+
 
 const MainMap = () => {
+  const isDesktop = useMediaQuery('(min-width:1024px)');
   const displayType = useAppSelector(getDataDisplayType);
 
   const { lat, lng } = useAppSelector(getCurrentUserLocation);
@@ -92,10 +99,11 @@ const MainMap = () => {
 
   return (
     <Stack direction={"column"}>
-      <Stack direction={"column"} height={"100wh"}>
-        <HeaderVisabilityType />
+      <Stack className={isDesktop ? 'app-desktop' : ''} direction={isDesktop ? "row" : "column"} height={"100wh"}>
+        {!isDesktop && <HeaderVisabilityType />}
+        {isDesktop && <><AppLogo /><OfficeList /></>}
         {displayType === DATA_DISPLAY_TYPE.MAP && (
-          <div id="map" className="map" />
+          <Map />
         )}
         {displayType === DATA_DISPLAY_TYPE.LIST && <OfficeList />}
       </Stack>

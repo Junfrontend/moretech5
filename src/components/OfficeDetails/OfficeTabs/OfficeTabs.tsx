@@ -93,7 +93,7 @@ export default function OfficeTabs() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <OfficeTags handleClick={() => console.log('1')}/>
+        <OfficeTags />
         <div className='office-menu-list'>
           Загруженность:
           <SimpleListMenu options={options} />
