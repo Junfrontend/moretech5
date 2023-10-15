@@ -24,3 +24,6 @@ export const getPointType = (state: RootState) =>
   state.UserLocationSlice.pointType;
 export const getCurrentOffice = (state: RootState) =>
   state.UserLocationSlice.currentOffice;
+
+  export const getMessageList = (state: RootState) =>
+  state.UserLocationSlice.messageList;

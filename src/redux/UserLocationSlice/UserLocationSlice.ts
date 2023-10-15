@@ -27,6 +27,7 @@ type OfficeSliceType = {
   isLoading: boolean,
   pointType: PointEnum
   currentOffice: any,
+  messageList: any,
 }
 
 const initialState: OfficeSliceType = {
@@ -39,7 +40,8 @@ const initialState: OfficeSliceType = {
   dataDisplayType: DATA_DISPLAY_TYPE.MAP,
   officesList: null,
   isLoading: false,
-  pointType: PointEnum.OFFICE
+  pointType: PointEnum.OFFICE,
+  messageList: [],
 }
 
 const UserLocationSlice = createSlice({
@@ -54,6 +56,12 @@ const UserLocationSlice = createSlice({
     clearLocation: (state) => {
       state.lat = null;
       state.lng = null;
+    },
+
+    setMessageList: (state, action) => {
+      console.log('set mess', action.payload);
+
+      state.messageList = state.messageList.concat([action.payload])
     },
 
     setUserLocationWatchId: (state, action) => {
@@ -106,5 +114,6 @@ export const {
   setOffices,
   setOfficesLoadingStatus,
   setPointType,
+  setMessageList,
   setCurrentOffice,
 } = UserLocationSlice.actions;

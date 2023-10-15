@@ -12,23 +12,21 @@ import { getJSONFromOfficies } from '../../utils';
 // import { officesData } from '../../mocks/offices';
 
 import './MainMap.css';
-import { Box, Stack } from '@mui/material';
-import HeaderVisabilityType from '../HeaderVisabilityType/HeaderVisabilityType';
-import { DATA_DISPLAY_TYPE } from '../../types';
-import OfficeList from '../OfficeList/OfficeList';
-import NavBar from '../NavVar/NavBar';
-import { setOffices } from '../../redux/UserLocationSlice/UserLocationSlice';
 import { fetchOfficesAction } from '../../redux/UserLocationSlice/asyncActions';
 import { PointEnum } from '../../types/office';
 import './MainMap.css';
-import { useMediaQuery } from '@mui/material';
-import { DRAWER_TYPES } from '../../types';
+import { Box, Stack, useMediaQuery } from '@mui/material';
+import HeaderVisabilityType from '../HeaderVisabilityType/HeaderVisabilityType';
+import { DATA_DISPLAY_TYPE, DRAWER_TYPES } from '../../types';
+import OfficeList from '../OfficeList/OfficeList';
+import NavBar from '../NavBar/NavBar';
+import { AppLogo } from '../AppLogo/AppLogo';
+
 import { useDispatch } from 'react-redux';
 import {
   setCurrentOffice,
   setDrawerOpen,
 } from '../../redux/UserLocationSlice/UserLocationSlice';
-import { AppLogo } from '../AppLogo/AppLogo';
 
 const Map = () => {
   return <div id='map' className='map' />;

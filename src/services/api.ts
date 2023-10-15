@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ApiRoutes } from "../consts/ApiRoutes";
 import { PointEnum } from "../types/office";
-import { ServiceEnum } from "../components/NavVar/NavBar";
+import { ServiceEnum } from "../components/NavBar/NavBar";
 
 const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3000/api";
 

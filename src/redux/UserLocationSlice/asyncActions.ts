@@ -4,7 +4,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { setOffices, setOfficesLoadingStatus } from "./UserLocationSlice";
 import { getOffices } from "../../services/api";
 import { PointEnum } from "../../types/office";
-import { ServiceEnum } from "../../components/NavVar/NavBar";
+import { ServiceEnum } from "../../components/NavBar/NavBar";
 
 export const fetchOfficesAction = createAsyncThunk<
   void,
